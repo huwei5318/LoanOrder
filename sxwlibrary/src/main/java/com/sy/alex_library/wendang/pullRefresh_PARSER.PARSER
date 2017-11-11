@@ -1,0 +1,60 @@
+
+
+  //  初始化 PulltoRefresh 方法
+
+   ListView mListView;
+   PullToRefreshListView mPullList;
+
+ private void initPull() {
+        mPullList  = (PullToRefreshListView) findViewById(R.id.);  //  有刀就去掉
+        mPullList.setPullRefreshEnabled(true); //  下拉加载
+        mPullList.setPullLoadEnabled(true);  // 上拉刷新,  如果将这项设置成false,setScrollLoadEnabled 为True  则触底就加载
+        mPullList.setScrollLoadEnabled(false);
+        mPullList.setLastUpdatedLabel(formatDate());   // 设置下拉时间
+        mPullList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                AsyGet.page = 1;   // 接口page
+                AsyGet.execute(ReviewActivity.this, false);
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                    // getPage(total,Per_page)获得总页数   和当前页比较.
+                if (getPage(mReviewBean.getData().getTotal(), mReviewBean.getData().getPer_page()) == AsyGet.page) {
+                    showToast("没有更多");
+                    mPullList.onPullUpRefreshComplete();
+                    mPullList.onPullDownRefreshComplete();
+                } else {
+                    //带分页的接口 默认多加一个字段  int page
+                    AsyGet.page = AsyGet.page + 1;
+                    AsyGet.execute(ReviewActivity.this, false);
+                }
+            }
+        });
+        mListView = mPullList.getRefreshableView();  // 获得ListView
+        mListView.setDivider(null); // ListView 去 item分割线
+        mListView.setSelector(getResources().getDrawable(R.color.transparent)); // 点击背景透明
+    }
+
+
+    // 接口 success 内
+              if (messageGetAsyGet.page == 1 && messageAdapter != null) {
+                            lists.clear();
+                        }
+                mReviewBean = reviewBean;
+                mArrayList.addAll(reviewBean.getData().getData());  //  追加,如果下拉加载,就clear掉, 又不费我流量
+                if (adapter == null) {
+                    adapter = new Adapter(activity.this, mArrayList);
+                    mListView.setAdapter(adapter);
+                } else {
+                    adapter.notifyDataSetChanged();
+                }
+                mPullList.onPullUpRefreshComplete();
+                mPullList.onPullDownRefreshComplete();
+
+
+
+
+
+

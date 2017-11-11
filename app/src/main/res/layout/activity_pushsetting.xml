@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rela"
+        android:layout_width="match_parent"
+        android:layout_height="136px"
+        android:background="@mipmap/bg_rela">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="96px"
+            android:layout_alignParentBottom="true">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="41px"
+                android:layout_height="41px"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30px"
+                android:layout_marginStart="30px"
+                android:background="@mipmap/aliwx_common_back_btn_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="推送设置"
+                android:textColor="@color/white"
+                android:textSize="33px" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pushcity"
+        android:layout_width="match_parent"
+        android:layout_height="88px"
+        android:layout_marginTop="10px"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/image1"
+            android:layout_width="wrap_content"
+            android:layout_height="36px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30px"
+            android:text="单子推送城市"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/txtcity"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/image2"
+            android:gravity="center|left"
+            android:padding="30px"
+            android:text="设置推送城市"
+            android:textColor="@color/black"
+            android:textSize="23px" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="30px"
+            android:layout_height="40px"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30px"
+            android:background="@mipmap/gray_forword"
+            tools:ignore="RtlCompat" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:background="#e5e5e5" />
+
+    <RelativeLayout
+        android:id="@+id/ispush"
+        android:layout_width="match_parent"
+        android:layout_height="88px"
+        android:layout_marginTop="10px"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30px"
+            android:text="是否推送消息"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/pushimage"
+            android:layout_width="60px"
+            android:layout_height="60px"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30px"
+            android:background="@mipmap/icon_off"
+            tools:ignore="RtlCompat" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:background="#e5e5e5" />
+
+    <Button
+        android:id="@+id/pushseting"
+        android:layout_width="620px"
+        android:layout_height="88px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20px"
+        android:background="@drawable/btnbg"
+        android:enabled="false"
+        android:text="提交设置"
+        android:textColor="@color/black"
+        android:textSize="33px" />
+</LinearLayout>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="136px"
+        android:background="@mipmap/bg_rela">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="96px"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="发现"
+                android:textColor="@color/white"
+                android:textSize="33px" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <com.jude.rollviewpager.RollPagerView
+        android:id="@+id/fragment_fx"
+        android:layout_width="match_parent"
+        android:layout_height="200px" />
+
+    <RelativeLayout
+        android:id="@+id/rela_tixian"
+        android:layout_width="620px"
+        android:layout_height="202px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60px"
+        android:background="@mipmap/bg_bttx">
+
+        <ImageView
+
+            android:id="@+id/imageone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60px"
+            android:background="@mipmap/icon_bttx" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="40px"
+            android:layout_toRightOf="@+id/imageone"
+            android:text="信用订单"
+            android:textColor="@color/white"
+            android:textSize="33px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50px"
+            android:layout_marginLeft="60px"
+            android:layout_toRightOf="@+id/imageone"
+            android:text="一秒提现"
+            android:textColor="@color/white"
+            android:textSize="27px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rela_taoorder"
+        android:layout_width="620px"
+        android:layout_height="202px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60px"
+        android:background="@mipmap/bg_td">
+
+        <ImageView
+            android:id="@+id/imagetwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60px"
+            android:background="@mipmap/icon_td" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginTop="40px"
+            android:layout_toRightOf="@+id/imagetwo"
+            android:text="淘单"
+            android:textColor="@color/white"
+            android:textSize="33px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50px"
+            android:layout_marginLeft="60px"
+            android:layout_toRightOf="@+id/imagetwo"
+            android:text="单子免费淘"
+            android:textColor="@color/white"
+            android:textSize="27px" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10px"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="70px"
+                android:text="贷款金额(元)"
+                android:textSize="33px" />
+
+            <LinearLayout
+                android:layout_width="490px"
+                android:layout_height="88px"
+                android:layout_gravity="center"
+                android:layout_marginTop="10px"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/ed_moneyone"
+                    android:layout_width="200px"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:textColor="@color/black"
+                    android:textSize="27px" />
+
+                <ImageView
+                    android:layout_width="90px"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/hx" />
+
+                <EditText
+                    android:id="@+id/ed_moneytwo"
+                    android:layout_width="200px"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:textColor="@color/black"
+                    android:textSize="27px" />
+            </LinearLayout>
+
+            <!--<TextView-->
+                <!--android:layout_width="490px"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginTop="20px"-->
+                <!--android:text="价格范围(元)"-->
+                <!--android:textSize="33px" />-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="490px"-->
+                <!--android:layout_height="88px"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginTop="10px"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/ed_priceone"-->
+                    <!--android:layout_width="200px"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/gray"-->
+                    <!--android:inputType="number"-->
+                    <!--android:maxLength="5"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="27px" />-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="90px"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@mipmap/hx" />-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/ed_pricetwo"-->
+                    <!--android:layout_width="200px"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/gray"-->
+                    <!--android:inputType="number"-->
+                    <!--android:maxLength="5"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="27px" />-->
+            <!--</LinearLayout>-->
+
+            <TextView
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:text="贷款期限(月)"
+                android:textSize="33px" />
+
+            <LinearLayout
+                android:layout_width="490px"
+                android:layout_height="88px"
+                android:layout_gravity="center"
+                android:layout_marginTop="10px"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/ed_monthone"
+                    android:layout_width="200px"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textColor="@color/black"
+                    android:textSize="27px" />
+
+                <ImageView
+                    android:layout_width="90px"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/hx" />
+
+                <EditText
+                    android:id="@+id/ed_monthtwo"
+                    android:layout_width="200px"
+                    android:layout_height="match_parent"
+                    android:background="@color/gray"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textColor="@color/black"
+                    android:textSize="27px" />
+            </LinearLayout>
+
+            <!--<TextView-->
+                <!--android:layout_width="490px"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginTop="20px"-->
+                <!--android:text="年龄范围(岁)"-->
+                <!--android:textSize="33px" />-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="490px"-->
+                <!--android:layout_height="88px"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginTop="10px"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/ed_ageone"-->
+                    <!--android:layout_width="200px"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/gray"-->
+                    <!--android:inputType="number"-->
+                    <!--android:maxLength="2"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="27px" />-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="90px"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@mipmap/hx" />-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/ed_agetwo"-->
+                    <!--android:layout_width="200px"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/gray"-->
+                    <!--android:inputType="number"-->
+                    <!--android:maxLength="2"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="27px" />-->
+            <!--</LinearLayout>-->
+
+            <TextView
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:text="用户职业"
+                android:textSize="33px" />
+
+            <LinearLayout
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <com.sy.alex_library.ui.ScrollGridView
+                    android:id="@+id/grid_zy"
+                    android:layout_width="490px"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:text="公积金"
+                android:textSize="33px" />
+
+            <LinearLayout
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <com.sy.alex_library.ui.ScrollGridView
+                    android:id="@+id/grid_gz"
+                    android:layout_width="490px"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:text="资产抵押"
+                android:textSize="33px" />
+
+            <LinearLayout
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <com.sy.alex_library.ui.ScrollGridView
+                    android:id="@+id/grid_dy"
+                    android:layout_width="490px"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:text="社保要求"
+                android:textSize="33px" />
+
+            <LinearLayout
+                android:layout_width="490px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <com.sy.alex_library.ui.ScrollGridView
+                    android:id="@+id/grid_sb"
+                    android:layout_width="490px"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="490px"
+                android:layout_height="96px"
+                android:layout_gravity="center"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_return"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:text="重置"
+                    android:textSize="33px" />
+
+                <Button
+                    android:id="@+id/btn_sure"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/orgred"
+                    android:text="确认"
+                    android:textColor="@color/white"
+                    android:textSize="33px" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

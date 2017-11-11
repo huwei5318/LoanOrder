@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#50000000"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="480px"
+        android:layout_height="wrap_content"
+        android:background="@drawable/corner"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:gravity="center"
+            android:text="平台声明"
+            android:textColor="@color/black"
+            android:textSize="44px" />
+
+        <TextView
+            android:id="@+id/txtstate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
+            android:layout_marginTop="10px"
+            android:gravity="center"
+            android:textColor="#a9a9a9"
+            android:textSize="33px" />
+
+        <Button
+            android:id="@+id/btn_know"
+            android:layout_width="156px"
+            android:layout_height="66px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20px"
+            android:layout_marginTop="20px"
+            android:background="@color/transparent"
+            android:text="确定"
+            android:textColor="@color/orgred"
+            android:textSize="27px" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:background="@color/listview" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="66px"
+        android:layout_marginTop="2px"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="160px"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="20px"
+            android:textColor="@color/black"
+            android:textSize="33px" />
+
+        <TextView
+            android:id="@+id/loanmoney"
+            android:layout_width="160px"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="30px"
+            android:textColor="@color/green"
+            android:textSize="27px" />
+
+        <TextView
+            android:id="@+id/month"
+            android:layout_width="100px"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="30px"
+            android:textColor="@color/green"
+            android:textSize="27px" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/ordertime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30px"
+
+                android:gravity="center"
+                android:paddingBottom="5px"
+                android:paddingLeft="5px"
+                android:paddingRight="5px"
+                android:paddingTop="5px"
+                android:textColor="@color/green"
+                android:textSize="27px" />
+
+            <TextView
+                android:id="@+id/ordername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:background="@drawable/bg_order"
+                android:gravity="center"
+                android:paddingBottom="5px"
+                android:paddingLeft="5px"
+                android:paddingRight="5px"
+                android:paddingTop="5px"
+                android:textColor="@color/white"
+                android:textSize="21px" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="66px"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="15px"
+            android:layout_weight="1"
+            android:background="@drawable/bg_txt"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:background="@mipmap/icon_city" />
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="27px" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="15px"
+            android:layout_weight="1"
+            android:background="@drawable/bg_txt"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:background="@mipmap/icon_zy" />
+
+            <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:id="@+id/zhiye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="27px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="15px"
+            android:layout_weight="1"
+            android:background="@drawable/bg_txt"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:background="@mipmap/icon_money" />
+
+            <TextView
+                android:id="@+id/money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="27px" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="66px"
+        android:layout_marginBottom="10px"
+        android:layout_marginTop="20px"
+        android:orientation="horizontal">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="15px"
+            android:layout_weight="1"
+            android:background="@drawable/bg_txt"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:background="@mipmap/icon_car" />
+
+            <TextView
+                android:id="@+id/car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="27px" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="15px"
+            android:layout_weight="1"
+            android:background="@drawable/bg_txt"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:background="@mipmap/icon_house" />
+
+            <TextView
+                android:id="@+id/house"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="27px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="15px"
+            android:layout_weight="1"
+            android:background="@drawable/bg_txt"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:background="@mipmap/icon_order" />
+
+            <TextView
+                android:id="@+id/order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15px"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="27px" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

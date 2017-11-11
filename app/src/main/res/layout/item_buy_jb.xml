@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200px"
+    android:layout_height="160px"
+    android:gravity="center"
+    android:id="@+id/line_buy"
+    android:background="@drawable/bg_line"
+    android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/buy_money"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/orgred"
+            android:textSize="33px" />
+
+        <TextView
+            android:id="@+id/buy_discount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/orgred"
+            android:textSize="23px" />
+</LinearLayout>

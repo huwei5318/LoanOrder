@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/Main</item>
+        <item name="colorPrimaryDark">@color/Main</item>
+        <item name="colorAccent">@color/Main</item>
+        <item name="android:statusBarColor">@color/While</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/While</item>
+        <item name="android:textColorPrimary">@color/text_black</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
+</resources>
