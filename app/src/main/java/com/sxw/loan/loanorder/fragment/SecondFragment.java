@@ -17,7 +17,7 @@ import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.activity.TaoOrderActivity;
 import com.sxw.loan.loanorder.activity.TxAcrivity;
-import com.sxw.loan.loanorder.activity.WebVIewActivity;
+import com.sxw.loan.loanorder.activity.WebViewActivity;
 import com.sxw.loan.loanorder.adapter.RollViewPagerAdapter;
 import com.sxw.loan.loanorder.moudle.BannerData;
 import com.sxw.loan.loanorder.util.ConstantUrl;
@@ -55,7 +55,9 @@ public class SecondFragment extends MyFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_second, null);
-        StatusBarUtil.setTransparentForImageViewInFragment(getActivity(), null);
+//        StatusBarUtil.setTransparentForImageViewInFragment(getActivity(), null);
+        StatusBarUtil.setColor(getActivity(),getResources().getColor(R.color.main_nav_blue),0);
+
         ButterKnife.bind(this, view);
         data();
         rollPagerView = (RollPagerView) view.findViewById(R.id.fragment_fx);
@@ -75,7 +77,7 @@ public class SecondFragment extends MyFragment {
             public void onItemClick(int position) {
                 Log.e("Aaaaa", banners.get(position).getWeburl());
                 if (banners.get(position).getWeburl() != null) {
-                    Intent intent = new Intent(getContext(), WebVIewActivity.class);
+                    Intent intent = new Intent(getContext(), WebViewActivity.class);
                     intent.putExtra("web", banners.get(position).getWeburl());
                     startActivity(intent);
                 }

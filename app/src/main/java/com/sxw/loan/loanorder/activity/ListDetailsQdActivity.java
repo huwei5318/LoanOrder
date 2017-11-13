@@ -18,10 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.adorkable.iosdialog.ActionSheetDialog;
 import com.eminayar.panter.DialogType;
@@ -43,6 +40,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.adapter.LiuChenAdapter;
+import com.sxw.loan.loanorder.databinding.ActivityListdetailsqdBinding;
 import com.sxw.loan.loanorder.moudle.FirstDetailsBean;
 import com.sxw.loan.loanorder.moudle.FirstOrderDetails;
 import com.sxw.loan.loanorder.moudle.FirstQdDetailsBean;
@@ -52,7 +50,6 @@ import com.sxw.loan.loanorder.util.ConstantUrl;
 import com.sy.alex_library.base.BaseActivity;
 import com.sy.alex_library.tools.ToastUtils;
 import com.sy.alex_library.ui.LoadingDialog;
-import com.sy.alex_library.ui.ScrollListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -65,68 +62,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
+
+import static com.sxw.loan.loanorder.R.id.orderusertel;
 
 /**
  * Created by Sxw on 2017-07-23.
  */
 
-public class ListDetailsQdActivity extends BaseActivity {
-    private static final String TAG = "listdetailsqd";
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
-    @BindView(R.id.orderusername)
-    TextView orderusername;
-    @BindView(R.id.orderuserage)
-    TextView orderuserage;
-    @BindView(R.id.orderusersex)
-    TextView orderusersex;
-    @BindView(R.id.orderusertel)
-    TextView orderusertel;
-    @BindView(R.id.orderusertime)
-    TextView orderusertime;
-    @BindView(R.id.orderusercity)
-    TextView orderusercity;
-    @BindView(R.id.orderusertimemoney)
-    TextView orderusertimemoney;
-    @BindView(R.id.orderusertimemonth)
-    TextView orderusertimemonth;
-    @BindView(R.id.orderuserwork)
-    TextView orderuserwork;
-    @BindView(R.id.orderuserSecurity)
-    TextView orderuserSecurity;
-    @BindView(R.id.orderuserCreditRecord)
-    TextView orderuserCreditRecord;
-    @BindView(R.id.orderuserhouse)
-    TextView orderuserhouse;
-    @BindView(R.id.btn_tel)
-    Button btnTel;
-    @BindView(R.id.btn_btqd)
-    Button btnBtqd;
-    @BindView(R.id.liuchengListView)
-    ScrollListView liuchengListView;
-    @BindView(R.id.tabliucheng)
-    LinearLayout tabliucheng;
-    @BindView(R.id.tabdetailds)
-    LinearLayout tabdetailds;
-    @BindView(R.id.txtholdfalis)
-    TextView txtholdfalis;
-    @BindView(R.id.btn_hoildfild)
-    Button btnHoildfild;
-    @BindView(R.id.linehold)
-    LinearLayout linehold;
-    @BindView(R.id.btn_faild)
-    Button btnFaild;
-    @BindView(R.id.btn_btqdsuccess)
-    Button btnBtqdsuccess;
-    @BindView(R.id.linesuccess)
-    LinearLayout linesuccess;
-    @BindView(R.id.change)
-    TextView change;
+public class ListDetailsQdActivity extends BaseActivity<ActivityListdetailsqdBinding> {
+    private static final String TAG = "ListDetailsQdActivity";
     private int userid, orderid;
     private String phone;
     List<LocalMedia> selectList;
@@ -142,8 +88,12 @@ public class ListDetailsQdActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listdetailsqd);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("订单详情");
+        setListener();
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);
@@ -173,14 +123,14 @@ public class ListDetailsQdActivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    tabdetailds.setVisibility(View.VISIBLE);
-                    tabliucheng.setVisibility(View.GONE);
+                    bindingView.tabdetailds.setVisibility(View.VISIBLE);
+                    bindingView.tabliucheng.setVisibility(View.GONE);
                 }
                 if (tab.getPosition() == 1) {
                     list.clear();
                     loanorderliucheng(orderid, userid);
-                    tabdetailds.setVisibility(View.GONE);
-                    tabliucheng.setVisibility(View.VISIBLE);
+                    bindingView.tabdetailds.setVisibility(View.GONE);
+                    bindingView.tabliucheng.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -192,6 +142,15 @@ public class ListDetailsQdActivity extends BaseActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    private void setListener() {
+        bindingView.btnTel.setOnClickListener(this);
+        bindingView.btnBtqd.setOnClickListener(this);
+        bindingView.btnFaild.setOnClickListener(this);
+        bindingView.btnHoildfild.setOnClickListener(this);
+        bindingView.btnBtqdsuccess.setOnClickListener(this);
+        bindingView.orderusertel.setOnClickListener(this);
     }
 
     private void loanorder(Integer orderid, Integer userid) {
@@ -215,84 +174,84 @@ public class ListDetailsQdActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         Log.e(TAG, "onResponse: " + response);
                         FirstDetailsBean firstDetailsBean = new Gson().fromJson(response, FirstDetailsBean.class);
-                        orderusername.setText(firstDetailsBean.getOrder().getName());
-                        orderusertel.setText(firstDetailsBean.getOrder().getPhoneNumber());
+                        bindingView.orderusername.setText(firstDetailsBean.getOrder().getName());
+                        bindingView.orderusertel.setText(firstDetailsBean.getOrder().getPhoneNumber());
                         phone = firstDetailsBean.getOrder().getPhoneNumber();
                         if (firstDetailsBean.getOrder().getJAmount() != 0) {
-                            change.setText(firstDetailsBean.getOrder().getJAmount() + "J豆");
+                            bindingView.change.setText(firstDetailsBean.getOrder().getJAmount() + "J豆");
                         } else {
-                            change.setText("0J豆");
+                            bindingView.change.setText("0J豆");
                         }
                         //年龄
                         if (firstDetailsBean.getOrder().getAge() == null) {
-                            orderuserage.setText("详情咨询客户");
+                            bindingView.orderuserage.setText("详情咨询客户");
                         } else {
-                            orderuserage.setText(firstDetailsBean.getOrder().getAge());
+                            bindingView.orderuserage.setText(firstDetailsBean.getOrder().getAge());
                         }
                         //性别
                         if (firstDetailsBean.getOrder().getSex() != null && firstDetailsBean.getOrder().getSex().equals("0")) {
-                            orderusersex.setText("男");
+                            bindingView.orderusersex.setText("男");
                         } else if (firstDetailsBean.getOrder().getSex() != null && firstDetailsBean.getOrder().getSex().equals("1")) {
-                            orderusersex.setText("女");
+                            bindingView.orderusersex.setText("女");
                         } else if (firstDetailsBean.getOrder().getSex() == null) {
-                            orderusersex.setText("男");
+                            bindingView.orderusersex.setText("男");
                         }
-                        orderusertime.setText(stampToDate(String.valueOf(firstDetailsBean.getOrder().getCreateTime())));
-                        orderusercity.setText(firstDetailsBean.getOrder().getCity());
-                        orderusertimemoney.setText(firstDetailsBean.getOrder().getAmount() + "元");
+                        bindingView.orderusertime.setText(stampToDate(String.valueOf(firstDetailsBean.getOrder().getCreateTime())));
+                        bindingView.orderusercity.setText(firstDetailsBean.getOrder().getCity());
+                        bindingView.orderusertimemoney.setText(firstDetailsBean.getOrder().getAmount() + "元");
                         //期限
                         if (firstDetailsBean.getOrder().getCreditPeriod() > 0) {
-                            orderusertimemonth.setText("详情咨询客户");
+                            bindingView.orderusertimemonth.setText("详情咨询客户");
                         } else {
-                            orderusertimemonth.setText(firstDetailsBean.getOrder().getCreditRecord() + "月");
+                            bindingView.orderusertimemonth.setText(firstDetailsBean.getOrder().getCreditRecord() + "月");
                         }
                         //职业
                         if (firstDetailsBean.getOrder().getWorkType() != null && firstDetailsBean.getOrder().getWorkType().equals("0")) {
-                            orderuserwork.setText("企业主");
+                            bindingView.orderuserwork.setText("企业主");
                         } else if (firstDetailsBean.getOrder().getWorkType() != null && firstDetailsBean.getOrder().getWorkType().equals("1")) {
-                            orderuserwork.setText("上班族");
+                            bindingView.orderuserwork.setText("上班族");
                         } else if (firstDetailsBean.getOrder().getWorkType() != null && firstDetailsBean.getOrder().getWorkType().equals("2")) {
-                            orderuserwork.setText("个体户");
+                            bindingView.orderuserwork.setText("个体户");
                         } else if (firstDetailsBean.getOrder().getWorkType() != null && firstDetailsBean.getOrder().getWorkType().equals("3")) {
-                            orderuserwork.setText("学生");
+                            bindingView.orderuserwork.setText("学生");
                         } else if (firstDetailsBean.getOrder().getWorkType() != null && firstDetailsBean.getOrder().getWorkType().equals("4")) {
-                            orderuserwork.setText("公务员/事业编");
+                            bindingView.orderuserwork.setText("公务员/事业编");
                         } else if (firstDetailsBean.getOrder().getWorkType() != null && firstDetailsBean.getOrder().getWorkType().equals("5")) {
-                            orderuserwork.setText("自由职业");
+                            bindingView.orderuserwork.setText("自由职业");
                         } else if (firstDetailsBean.getOrder().getWorkType() == null) {
-                            orderuserwork.setText("其他");
+                            bindingView.orderuserwork.setText("其他");
                         }
                         //社保
                         if (firstDetailsBean.getOrder().getSocialSecurity() != null && firstDetailsBean.getOrder().getSocialSecurity().equals("0")) {
-                            orderuserSecurity.setText("有");
+                            bindingView.orderuserSecurity.setText("有");
                         } else if (firstDetailsBean.getOrder().getSocialSecurity() != null && firstDetailsBean.getOrder().getSocialSecurity().equals("1")) {
-                            orderuserSecurity.setText("无");
+                            bindingView.orderuserSecurity.setText("无");
                         } else if (firstDetailsBean.getOrder().getSocialSecurity() == null) {
-                            orderuserSecurity.setText("详情咨询客户");
+                            bindingView.orderuserSecurity.setText("详情咨询客户");
                         }
                         //信用
                         if (firstDetailsBean.getOrder().getCreditRecord() != null && firstDetailsBean.getOrder().getCreditRecord().equals("0")) {
-                            orderuserCreditRecord.setText("无纪录");
+                            bindingView.orderuserCreditRecord.setText("无纪录");
                         } else if (firstDetailsBean.getOrder().getCreditRecord() != null && firstDetailsBean.getOrder().getCreditRecord().equals("1")) {
-                            orderuserCreditRecord.setText("良好");
+                            bindingView.orderuserCreditRecord.setText("良好");
                         } else if (firstDetailsBean.getOrder().getCreditRecord() != null && firstDetailsBean.getOrder().getCreditRecord().equals("2")) {
-                            orderuserCreditRecord.setText("少数逾期");
+                            bindingView.orderuserCreditRecord.setText("少数逾期");
                         } else if (firstDetailsBean.getOrder().getCreditRecord() != null && firstDetailsBean.getOrder().getCreditRecord().equals("3")) {
-                            orderuserCreditRecord.setText("多数逾期");
+                            bindingView.orderuserCreditRecord.setText("多数逾期");
                         } else if (firstDetailsBean.getOrder().getCreditRecord() == null) {
-                            orderuserCreditRecord.setText("详情咨询客户");
+                            bindingView.orderuserCreditRecord.setText("详情咨询客户");
                         }
                         //资产
                         if (firstDetailsBean.getOrder().getHouseholdAssets() != null && firstDetailsBean.getOrder().getHouseholdAssets().equals("0")) {
-                            orderuserhouse.setText("无");
+                            bindingView.orderuserhouse.setText("无");
                         } else if (firstDetailsBean.getOrder().getHouseholdAssets() != null && firstDetailsBean.getOrder().getHouseholdAssets().equals("1")) {
-                            orderuserhouse.setText("房产");
+                            bindingView.orderuserhouse.setText("房产");
                         } else if (firstDetailsBean.getOrder().getHouseholdAssets() != null && firstDetailsBean.getOrder().getHouseholdAssets().equals("2")) {
-                            orderuserhouse.setText("车");
+                            bindingView.orderuserhouse.setText("车");
                         } else if (firstDetailsBean.getOrder().getHouseholdAssets() != null && firstDetailsBean.getOrder().getHouseholdAssets().equals("3")) {
-                            orderuserhouse.setText("其他");
+                            bindingView.orderuserhouse.setText("其他");
                         } else if (firstDetailsBean.getOrder().getHouseholdAssets() == null) {
-                            orderuserhouse.setText("无");
+                            bindingView.orderuserhouse.setText("无");
                         }
 
                     }
@@ -324,31 +283,31 @@ public class ListDetailsQdActivity extends BaseActivity {
                         list.add(firstDetailsBean.getProcess().getQdMsg());
                         if (firstDetailsBean.getProcess().getOrderStatus() == 4) {
                             list.add("Hold住订单(已经联系客户，达成初步的合作意向)");
-                            linehold.setVisibility(View.GONE);
-                            linesuccess.setVisibility(View.VISIBLE);
+                            bindingView.linehold.setVisibility(View.GONE);
+                            bindingView.linesuccess.setVisibility(View.VISIBLE);
                         }
                         if (firstDetailsBean.getProcess().getOrderStatus() == 1) {
                             list.add("订单已取消" + "(" + firstDetailsBean.getProcess().getCancelReason() + ")");
                             list.add("订单已完成");
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         if (firstDetailsBean.getProcess().getOrderStatus() == 2) {
                             list.add("Hold住订单(已经联系客户，达成初步的合作意向)");
                             list.add("放款失败" + "(" + firstDetailsBean.getProcess().getDkFailReason() + ")");
                             list.add("订单已完成");
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         if (firstDetailsBean.getProcess().getOrderStatus() == 3) {
                             list.add("Hold住订单(已经联系客户，达成初步的合作意向)");
                             list.add("放款成功");
                             list.add("订单已完成");
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         Message message = new Message();
                         message.what = 1;
@@ -363,7 +322,7 @@ public class ListDetailsQdActivity extends BaseActivity {
             switch (msg.what) {
                 case 1:
                     liuChenAdapter = new LiuChenAdapter(ListDetailsQdActivity.this, list);
-                    liuchengListView.setAdapter(liuChenAdapter);
+                    bindingView.liuchengListView.setAdapter(liuChenAdapter);
                     liuChenAdapter.notifyDataSetChanged();
                     break;
             }
@@ -380,8 +339,11 @@ public class ListDetailsQdActivity extends BaseActivity {
         return res;
     }
 
-    @OnClick({R.id.btn_tel, R.id.btn_btqd, R.id.btn_back, R.id.btn_hoildfild, R.id.btn_btqdsuccess, R.id.btn_faild, R.id.orderusertel})
-    public void onClick(View view) {
+
+    @Override
+    protected void onViewClick(View view) {
+        super.onViewClick(view);
+
         switch (view.getId()) {
             case R.id.btn_back:
                 this.finish();
@@ -433,7 +395,7 @@ public class ListDetailsQdActivity extends BaseActivity {
                 }
                 startActivity(mIntent);
                 break;
-            case R.id.orderusertel:
+            case orderusertel:
                 Intent mIntent1 = new Intent(Intent.ACTION_CALL);
                 mIntent1.setData(Uri.parse("tel:" + phone));
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -472,8 +434,8 @@ public class ListDetailsQdActivity extends BaseActivity {
                                 Log.e(TAG, "onResponse: " + response);
                                 OrderBean orderBean = new Gson().fromJson(response, OrderBean.class);
                                 if (orderBean.getCode().equals("0")) {
-                                    linehold.setVisibility(View.GONE);
-                                    linesuccess.setVisibility(View.VISIBLE);
+                                    bindingView.linehold.setVisibility(View.GONE);
+                                    bindingView.linesuccess.setVisibility(View.VISIBLE);
                                     ToastUtils.showToastGravityCenter(orderBean.getMsg() + ",可以继续操作");
                                 } else {
                                     ToastUtils.showToastGravityCenter(orderBean.getMsg());
@@ -484,6 +446,7 @@ public class ListDetailsQdActivity extends BaseActivity {
                 break;
         }
     }
+
 
     //holdbuzhu
     private void showInputnegative() {
@@ -522,9 +485,9 @@ public class ListDetailsQdActivity extends BaseActivity {
                                                         Log.e(TAG, "onResponse: " + response);
                                                         OrderBean orderBean = new Gson().fromJson(response, OrderBean.class);
                                                         ToastUtils.showToastGravityCenter(orderBean.getMsg());
-                                                        txtholdfalis.setVisibility(View.VISIBLE);
-                                                        linesuccess.setVisibility(View.GONE);
-                                                        linehold.setVisibility(View.GONE);
+                                                        bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                                                        bindingView.linesuccess.setVisibility(View.GONE);
+                                                        bindingView.linehold.setVisibility(View.GONE);
                                                     }
 
                                                 });
@@ -636,9 +599,9 @@ public class ListDetailsQdActivity extends BaseActivity {
                                     OrderBean orderBean = new Gson().fromJson(response, OrderBean.class);
                                     ToastUtils.showToastGravityCenter(orderBean.getMsg());
                                     popWindow.dismiss();
-                                    txtholdfalis.setVisibility(View.VISIBLE);
-                                    linesuccess.setVisibility(View.GONE);
-                                    linehold.setVisibility(View.GONE);
+                                    bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                                    bindingView.linesuccess.setVisibility(View.GONE);
+                                    bindingView.linehold.setVisibility(View.GONE);
                                 }
 
                             });

@@ -8,13 +8,14 @@ import android.view.WindowManager;
 
 import com.sxw.loan.loanorder.MainActivity;
 import com.sxw.loan.loanorder.R;
+import com.sxw.loan.loanorder.databinding.ActivitySplashBinding;
 import com.sy.alex_library.base.BaseActivity;
 
 /**
  * Created by Sxw on 2017-07-20.
  */
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
     private int userid;
 
     @Override
@@ -24,6 +25,8 @@ public class SplashActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);  //全屏
         setContentView(R.layout.activity_splash);
 
+        showContentView();
+        setTitleBar(false);
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);
@@ -41,7 +44,7 @@ public class SplashActivity extends BaseActivity {
                 startActivity(MainActivity.class);
                 SplashActivity.this.finish();
             } else {
-                startActivity(LognActivity.class);
+                startActivity(LoginActivity.class);
                 SplashActivity.this.finish();
             }
         }

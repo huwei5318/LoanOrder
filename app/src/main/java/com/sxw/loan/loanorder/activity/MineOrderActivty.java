@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -17,13 +16,13 @@ import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.adapter.MineOrderAdapter;
 import com.sxw.loan.loanorder.adapter.MineWhiteAdapter;
+import com.sxw.loan.loanorder.databinding.ActivityMineorderBinding;
 import com.sxw.loan.loanorder.moudle.MineOrderReg;
 import com.sxw.loan.loanorder.moudle.MineOrderRet;
 import com.sxw.loan.loanorder.moudle.MineWhiteRet;
 import com.sxw.loan.loanorder.util.ConstantUrl;
 import com.sy.alex_library.base.BaseActivity;
 import com.sy.alex_library.pullToRefresh.PullToRefreshBase;
-import com.sy.alex_library.pullToRefresh.PullToRefreshListView;
 import com.sy.alex_library.tools.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -34,9 +33,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
 
@@ -44,14 +40,9 @@ import okhttp3.MediaType;
  * Created by Administrator on 2017/7/28.
  */
 
-public class MineOrderActivty extends BaseActivity {
-    private static final String TAG = "mineorderactivity";
-    @BindView(R.id.orderlist)
-    PullToRefreshListView orderlist;
-    @BindView(R.id.whitelist)
-    PullToRefreshListView whitelist;
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
+public class MineOrderActivty extends BaseActivity<ActivityMineorderBinding> {
+    private static final String TAG = "MineOrderActivty";
+
     private int userid, page = 1;
     private TabLayout tabLayout;
     private ListView listView;
@@ -65,8 +56,13 @@ public class MineOrderActivty extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mineorder);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+
+        showContentView();
+        setTitle("我的订单");
+
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);
@@ -87,15 +83,15 @@ public class MineOrderActivty extends BaseActivity {
                     page = 1;
                     mlistBeenorder.clear();
                     loanorder(page, userid);
-                    orderlist.setVisibility(View.VISIBLE);
-                    whitelist.setVisibility(View.GONE);
+                    bindingView.orderlist.setVisibility(View.VISIBLE);
+                    bindingView.whitelist.setVisibility(View.GONE);
                 }
                 if (tab.getPosition() == 1) {
                     page = 1;
                     mlistBeenwhite.clear();
                     loanwhite(page, userid);
-                    orderlist.setVisibility(View.GONE);
-                    whitelist.setVisibility(View.VISIBLE);
+                    bindingView.orderlist.setVisibility(View.GONE);
+                    bindingView.whitelist.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -114,11 +110,11 @@ public class MineOrderActivty extends BaseActivity {
 
     //白条a
     private void initviewwhite() {
-        whitelist.setPullRefreshEnabled(true);
-        whitelist.setPullLoadEnabled(false);
-        whitelist.setScrollLoadEnabled(true);
-        whitelist.setLastUpdatedLabel(new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis())));   // 设置下拉时间
-        whitelist.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+        bindingView.whitelist.setPullRefreshEnabled(true);
+        bindingView.whitelist.setPullLoadEnabled(false);
+        bindingView.whitelist.setScrollLoadEnabled(true);
+        bindingView.whitelist.setLastUpdatedLabel(new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis())));   // 设置下拉时间
+        bindingView.whitelist.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 mlistBeenwhite.clear();
@@ -135,7 +131,7 @@ public class MineOrderActivty extends BaseActivity {
                 mineWhiteAdapter.notifyDataSetChanged();
             }
         });
-        listwhiteview = whitelist.getRefreshableView();
+        listwhiteview = bindingView.whitelist.getRefreshableView();
         listwhiteview.setDivider(null); // ListView 去 item分割线
         listwhiteview.setSelector(getResources().getDrawable(R.color.tran)); // 点击背景透明
         mineWhiteAdapter = new MineWhiteAdapter(this, mlistBeenwhite);
@@ -154,11 +150,11 @@ public class MineOrderActivty extends BaseActivity {
 
     //我得订单
     private void initvieworder() {
-        orderlist.setPullRefreshEnabled(true);
-        orderlist.setPullLoadEnabled(false);
-        orderlist.setScrollLoadEnabled(true);
-        orderlist.setLastUpdatedLabel(new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis())));   // 设置下拉时间
-        orderlist.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+        bindingView.orderlist.setPullRefreshEnabled(true);
+        bindingView.orderlist.setPullLoadEnabled(false);
+        bindingView.orderlist.setScrollLoadEnabled(true);
+        bindingView.orderlist.setLastUpdatedLabel(new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis())));   // 设置下拉时间
+        bindingView.orderlist.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 mlistBeenorder.clear();
@@ -175,7 +171,7 @@ public class MineOrderActivty extends BaseActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-        listView = orderlist.getRefreshableView();
+        listView = bindingView.orderlist.getRefreshableView();
         listView.setDivider(null); // ListView 去 item分割线
         listView.setSelector(getResources().getDrawable(R.color.tran)); // 点击背景透明
         adapter = new MineOrderAdapter(this, mlistBeenorder);
@@ -273,23 +269,23 @@ public class MineOrderActivty extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    orderlist.onPullUpRefreshComplete();
-                    orderlist.onPullDownRefreshComplete();
+                    bindingView.orderlist.onPullUpRefreshComplete();
+                    bindingView.orderlist.onPullDownRefreshComplete();
                     adapter.notifyDataSetChanged();
                     break;
                 case 2:
-                    orderlist.onPullUpRefreshComplete();
-                    orderlist.onPullDownRefreshComplete();
+                    bindingView.orderlist.onPullUpRefreshComplete();
+                    bindingView.orderlist.onPullDownRefreshComplete();
                     adapter.notifyDataSetChanged();
                     break;
                 case 3:
-                    whitelist.onPullUpRefreshComplete();
-                    whitelist.onPullDownRefreshComplete();
+                    bindingView.whitelist.onPullUpRefreshComplete();
+                    bindingView.whitelist.onPullDownRefreshComplete();
                     mineWhiteAdapter.notifyDataSetChanged();
                     break;
                 case 4:
-                    whitelist.onPullUpRefreshComplete();
-                    whitelist.onPullDownRefreshComplete();
+                    bindingView.whitelist.onPullUpRefreshComplete();
+                    bindingView.whitelist.onPullDownRefreshComplete();
                     mineWhiteAdapter.notifyDataSetChanged();
                     break;
             }
@@ -297,8 +293,4 @@ public class MineOrderActivty extends BaseActivity {
         }
     };
 
-    @OnClick(R.id.btn_back)
-    public void onClick() {
-        this.finish();
-    }
 }

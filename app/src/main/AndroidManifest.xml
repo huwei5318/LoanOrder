@@ -78,9 +78,9 @@
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
         <!-- alipay sdk end -->
-        <activity android:name=".activity.LognActivity" />
+        <activity android:name=".activity.LoginActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".activity.RegAvtivity" />
+        <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.RealNameActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.ForgotPassActivity" />
@@ -102,7 +102,7 @@
         <activity android:name=".activity.MineWhiteQDactivity" />
         <activity android:name=".activity.PushSettingActivity" />
         <activity android:name=".activity.QuestionActivity" />
-        <activity android:name=".activity.WebVIewActivity" />
+        <activity android:name=".activity.WebViewActivity" />
         <activity android:name=".activity.OrderActivity" />
 
         <meta-data

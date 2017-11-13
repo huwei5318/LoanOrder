@@ -6,16 +6,11 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="136px"
+        android:layout_height="45dp"
         android:background="@mipmap/bg_rela">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="96px"
-            android:layout_alignParentBottom="true">
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -24,7 +19,6 @@
                 android:text="发现"
                 android:textColor="@color/white"
                 android:textSize="33px" />
-        </RelativeLayout>
 
     </RelativeLayout>
 

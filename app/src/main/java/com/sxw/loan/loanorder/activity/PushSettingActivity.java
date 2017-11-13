@@ -6,14 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
+import com.sxw.loan.loanorder.databinding.ActivityPushsettingBinding;
 import com.sxw.loan.loanorder.moudle.OrderBean;
 import com.sxw.loan.loanorder.moudle.PushReg;
 import com.sxw.loan.loanorder.moudle.PushRet;
@@ -27,32 +23,20 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.util.HashSet;
 import java.util.Set;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import okhttp3.Call;
 import okhttp3.MediaType;
 
+import static com.sxw.loan.loanorder.R.id.pushseting;
+
 /**
  * Created by Sxw on 2017-07-29.
  */
 
-public class PushSettingActivity extends BaseActivity {
+public class PushSettingActivity extends BaseActivity<ActivityPushsettingBinding> {
     private static final String TAG = "PushSettingActivity";
-    @BindView(R.id.image)
-    ImageView image;
-    @BindView(R.id.txtcity)
-    TextView txtcity;
-    @BindView(R.id.pushcity)
-    RelativeLayout pushcity;
-    @BindView(R.id.pushimage)
-    ImageView pushimage;
-    @BindView(R.id.ispush)
-    RelativeLayout ispush;
-    @BindView(R.id.pushseting)
-    Button pushseting;
+
     private int userid;
     //城市选择返回码
     private static final int REQUEST_CODE_PICK_CITY = 233;
@@ -64,12 +48,54 @@ public class PushSettingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pushsetting);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+        showContentView();
+
+        setTitle("推送设置");
+        setListener();
+
+//
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);
         loanpush(userid);
+    }
+
+    private void setListener() {
+        bindingView.pushcity.setOnClickListener(this);
+        bindingView.ispush.setOnClickListener(this);
+        bindingView.pushseting.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onViewClick(View view) {
+        super.onViewClick(view);
+        switch (view.getId()) {
+            case R.id.image:
+                this.finish();
+                break;
+            case R.id.pushcity:
+                startActivityForResult(new Intent(this, CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
+                break;
+            case R.id.ispush:
+                if (pushfals == 1) {
+                    flag = "0";
+                    pushfals = 0;
+                    bindingView.pushimage.setBackgroundResource(R.mipmap.icon_on);
+
+                } else if (pushfals == 0) {
+                    flag = "1";
+                    pushfals = 1;
+                    bindingView.pushimage.setBackgroundResource(R.mipmap.icon_off);
+                }
+                bindingView.pushseting.setEnabled(true);
+                bindingView.pushseting.setBackgroundResource(R.drawable.buttonbg);
+                bindingView.pushseting.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case pushseting:
+                loanpushupdate(city, userid, flag, pushid);
+                break;
+        }
     }
 
     private void loanpush(Integer userid) {
@@ -96,13 +122,13 @@ public class PushSettingActivity extends BaseActivity {
                             pushid = pushRet.getPush().getId();
                             city = pushRet.getPush().getCity();
                             flag = pushRet.getPush().getFlag();
-                            txtcity.setText(city);
+                            bindingView.txtcity.setText(city);
                             if (pushRet.getPush().getFlag().equals("0")) {
                                 pushfals = 0;
-                                pushimage.setBackgroundResource(R.mipmap.icon_on);
+                                bindingView.pushimage.setBackgroundResource(R.mipmap.icon_on);
                             } else if (pushRet.getPush().getFlag().equals("1")) {
                                 pushfals = 1;
-                                pushimage.setBackgroundResource(R.mipmap.icon_off);
+                                bindingView.pushimage.setBackgroundResource(R.mipmap.icon_off);
                             }
                         } else {
                             pushid = -1;
@@ -114,36 +140,6 @@ public class PushSettingActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.image, R.id.pushcity, R.id.ispush, R.id.pushseting})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image:
-                this.finish();
-                break;
-            case R.id.pushcity:
-                startActivityForResult(new Intent(this, CityPickerActivity.class),
-                        REQUEST_CODE_PICK_CITY);
-                break;
-            case R.id.ispush:
-                if (pushfals == 1) {
-                    flag = "0";
-                    pushfals = 0;
-                    pushimage.setBackgroundResource(R.mipmap.icon_on);
-
-                } else if (pushfals == 0) {
-                    flag = "1";
-                    pushfals = 1;
-                    pushimage.setBackgroundResource(R.mipmap.icon_off);
-                }
-                pushseting.setEnabled(true);
-                pushseting.setBackgroundResource(R.drawable.buttonbg);
-                pushseting.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.pushseting:
-                loanpushupdate(city, userid, flag, pushid);
-                break;
-        }
-    }
 
     private void loanpushupdate(final String city, Integer userid, final String flag, Integer pushid) {
         PushUpdata pushUpdata = new PushUpdata();
@@ -179,9 +175,9 @@ public class PushSettingActivity extends BaseActivity {
                             ToastUtils.showToastGravityCenter(orderBean.getMsg());
                             PushSettingActivity.this.finish();
                             //极光设置标签
-                            pushseting.setEnabled(false);
-                            pushseting.setBackgroundResource(R.drawable.btnbg);
-                            pushseting.setTextColor(getResources().getColor(R.color.black));
+                            bindingView.pushseting.setEnabled(false);
+                            bindingView.pushseting.setBackgroundResource(R.drawable.btnbg);
+                            bindingView.pushseting.setTextColor(getResources().getColor(R.color.black));
                             if (flag.equals("1")) {
                                 Set<String> set = new HashSet<>();
                                 set.add("不推送");//名字任意，可多添加几个
@@ -214,11 +210,11 @@ public class PushSettingActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
             if (data != null) {
                 String citys = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-                txtcity.setText(citys);
+                bindingView.txtcity.setText(citys);
                 city = citys + "市";
-                pushseting.setEnabled(true);
-                pushseting.setBackgroundResource(R.drawable.buttonbg);
-                pushseting.setTextColor(getResources().getColor(R.color.white));
+                bindingView.pushseting.setEnabled(true);
+                bindingView.pushseting.setBackgroundResource(R.drawable.buttonbg);
+                bindingView.pushseting.setTextColor(getResources().getColor(R.color.white));
             }
         }
     }

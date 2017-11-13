@@ -1,49 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:id="@+id/rela"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="136px"
-        android:background="@mipmap/bg_rela">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <WebView
+            android:id="@+id/agreement_webView"
             android:layout_width="match_parent"
-            android:layout_height="96px"
-            android:layout_alignParentBottom="true">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/btn_back"
-                android:layout_width="41px"
-                android:layout_height="41px"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30px"
-                android:layout_marginStart="30px"
-                android:background="@mipmap/aliwx_common_back_btn_normal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="常见问题"
-                android:textColor="@color/white"
-                android:textSize="33px" />
-        </RelativeLayout>
-
-    </RelativeLayout>
-    <WebView
-        android:id="@+id/agreement_webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </WebView>
-</LinearLayout>
+        </WebView>
+    </LinearLayout>
+</layout>

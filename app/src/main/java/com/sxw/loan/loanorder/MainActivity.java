@@ -14,14 +14,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.sxw.loan.loanorder.adapter.FragmentAdapter;
+import com.sxw.loan.loanorder.databinding.ActivityMainBinding;
 import com.sxw.loan.loanorder.eventBus.MainBus;
 import com.sxw.loan.loanorder.fragment.FirstFragment;
 import com.sxw.loan.loanorder.fragment.MineFragment;
@@ -30,7 +28,6 @@ import com.sxw.loan.loanorder.moudle.UpdataBean;
 import com.sxw.loan.loanorder.ui.UpdataDialog;
 import com.sxw.loan.loanorder.util.ConstantUrl;
 import com.sy.alex_library.base.BaseActivity;
-import com.sy.alex_library.ui.BaseViewPager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -39,33 +36,19 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import kr.co.namee.permissiongen.PermissionGen;
 import okhttp3.Call;
 
-public class MainActivity extends BaseActivity {
-    @BindView(R.id.main_viewpager)
-    BaseViewPager mainViewpager;
-    @BindView(R.id.home_icon_home)
-    ImageView homeIconHome;
-    @BindView(R.id.home_txt_home)
-    TextView homeTxtHome;
-    @BindView(R.id.home_firstPager)
-    LinearLayout homeFirstPager;
-    @BindView(R.id.home_icon_order)
-    ImageView homeIconOrder;
-    @BindView(R.id.home_txt_order)
-    TextView homeTxtOrder;
-    @BindView(R.id.home_add)
-    LinearLayout homeAdd;
-    @BindView(R.id.home_icon_mine)
-    ImageView homeIconMine;
-    @BindView(R.id.home_txt_mine)
-    TextView homeTxtMine;
-    @BindView(R.id.home_mine)
-    LinearLayout homeMine;
+public class MainActivity extends BaseActivity<ActivityMainBinding>  implements ViewPager.OnPageChangeListener{
+
+
+    private FirstFragment firstFragment;
+    private SecondFragment secondFragment;
+    private MineFragment mineFragment;
+    private Fragment[] fragments;
+    private int index;
+    private Button[] mTabs;
+
     FragmentAdapter fragmentAdapter;
     private int mCurrentPosition = 0;
     private DrawerLayout mDrawerLayout;
@@ -75,32 +58,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         registerEventBus();
-        List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(0, new FirstFragment());
-        fragmentList.add(1, new SecondFragment());
-        fragmentList.add(2, new MineFragment());
-        mainViewpager.setOffscreenPageLimit(0);
-        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragmentList);
-        mainViewpager.setAdapter(fragmentAdapter);
-        mainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-                mCurrentPosition = position;
+        showContentView();
+        setTitleBar(false);
+        initContentFragments();
 
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         getPermission();
         initView();
         loadup();
@@ -170,6 +134,32 @@ public class MainActivity extends BaseActivity {
 //        }
     }
 
+    private void initContentFragments() {
+        mTabs = new Button[3];
+        mTabs[0] = (Button) findViewById(R.id.btn_home);
+        mTabs[1] = (Button) findViewById(R.id.btn_discover);
+        mTabs[2] = (Button) findViewById(R.id.btn_user);
+        // select first tab
+        mTabs[0].setSelected(true);
+
+
+        firstFragment = new FirstFragment();
+        secondFragment = new SecondFragment();
+        mineFragment = new MineFragment();
+        fragments = new Fragment[]{firstFragment,
+                secondFragment, mineFragment};
+        ArrayList<Fragment> mFragmentList = new ArrayList<>();
+        for (Fragment fragment : fragments) {
+            mFragmentList.add(fragment);
+        }
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), mFragmentList);
+        bindingView.vpContent.setAdapter(adapter);
+        // 设置ViewPager最大缓存的页面个数(cpu消耗少)
+        bindingView.vpContent.setOffscreenPageLimit(2);
+        bindingView.vpContent.addOnPageChangeListener(this);
+        bindingView.vpContent.setCurrentItem(0);
+    }
+
     private void getPermission() {
         PermissionGen.with(this)
                 .addRequestCode(100)
@@ -190,58 +180,12 @@ public class MainActivity extends BaseActivity {
         PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
-    @OnClick({R.id.home_firstPager, R.id.home_add, R.id.home_mine})
-    public void onClick(View view) {
-        initTabLayout();
-        switch (view.getId()) {
-            case R.id.home_firstPager:
-                homeIconHome.setBackgroundResource(R.mipmap.home_icon_home_red);
-                homeTxtHome.setTextColor(getResources().getColor(R.color.orgred));
-                mainViewpager.setCurrentItem(0, true);
-                break;
-            case R.id.home_add:
-                homeIconOrder.setBackgroundResource(R.mipmap.tab2_select);
-                homeTxtOrder.setTextColor(getResources().getColor(R.color.orgred));
-                mainViewpager.setCurrentItem(1, true);
-                break;
-            case R.id.home_mine:
-                homeIconMine.setBackgroundResource(R.mipmap.home_icon_mine_red);
-                homeTxtMine.setTextColor(getResources().getColor(R.color.orgred));
-                mainViewpager.setCurrentItem(2, true);
-                break;
-        }
-    }
 
-    //设置图标
-    private void initTabLayout() {
-        homeIconHome.setBackgroundResource(R.mipmap.home_icon_home_while);
-        homeTxtHome.setTextColor(getResources().getColor(R.color.text_black));
-        homeIconOrder.setBackgroundResource(R.mipmap.tab2_default);
-        homeTxtOrder.setTextColor(getResources().getColor(R.color.text_black));
-        homeIconMine.setBackgroundResource(R.mipmap.home_icon_mine_while);
-        homeTxtMine.setTextColor(getResources().getColor(R.color.text_black));
-    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        initTabLayout();
-        switch (mCurrentPosition) {
-            case 0:
-                homeIconHome.setBackgroundResource(R.mipmap.home_icon_home_red);
-                homeTxtHome.setTextColor(getResources().getColor(R.color.orgred));
-                break;
-            case 1:
-                homeIconOrder.setBackgroundResource(R.mipmap.tab2_select);
-                homeTxtOrder.setTextColor(getResources().getColor(R.color.orgred));
-                break;
-            case 2:
-                homeIconMine.setBackgroundResource(R.mipmap.home_icon_mine_red);
-                homeTxtMine.setTextColor(getResources().getColor(R.color.orgred));
-                break;
-            default:
-                break;
-        }
     }
 
     public static boolean isAvilible(Context context, String packageName) {
@@ -272,7 +216,42 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
+    /**
+     * on tab clicked
+     *
+     * @param view
+     */
+    public void onTabClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_home:
+                index = 0;
+                if (bindingView.vpContent.getCurrentItem() != 0) {//不然cpu会有损耗
+                    bindingView.btnHome.setSelected(true);
+                    bindingView.btnUser.setSelected(false);
+                    bindingView.btnDiscover.setSelected(false);
+                    bindingView.vpContent.setCurrentItem(0);
+                }
+                break;
+            case R.id.btn_discover:
+                index = 1;
+                if (bindingView.vpContent.getCurrentItem() != 1) {//不然cpu会有损耗
+                    bindingView.btnHome.setSelected(false);
+                    bindingView.btnUser.setSelected(false);
+                    bindingView.btnDiscover.setSelected(true);
+                    bindingView.vpContent.setCurrentItem(1);
+                }
+                break;
+            case R.id.btn_user:
+                if (bindingView.vpContent.getCurrentItem() != 2) {//不然cpu会有损耗
+                    bindingView.btnHome.setSelected(false);
+                    bindingView.btnUser.setSelected(true);
+                    bindingView.btnDiscover.setSelected(false);
+                    bindingView.vpContent.setCurrentItem(2);
+                }
+                index = 2;
+                break;
+        }
+    }
 
     /**
      * get App versionCode
@@ -291,5 +270,36 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
         return versionCode;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position) {
+            case 0:
+                bindingView.btnHome.setSelected(true);
+                bindingView.btnDiscover.setSelected(false);
+                bindingView.btnUser.setSelected(false);
+                break;
+            case 1:
+                bindingView.btnHome.setSelected(false);
+                bindingView.btnDiscover.setSelected(true);
+                bindingView.btnUser.setSelected(false);
+                break;
+            case 2:
+                bindingView.btnHome.setSelected(false);
+                bindingView.btnDiscover.setSelected(false);
+                bindingView.btnUser.setSelected(true);
+                break;
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

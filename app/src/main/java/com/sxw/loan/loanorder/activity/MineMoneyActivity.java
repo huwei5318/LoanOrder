@@ -10,9 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
@@ -20,17 +17,15 @@ import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.adapter.BuyJbadapter;
+import com.sxw.loan.loanorder.databinding.ActivityMinemoneyBinding;
 import com.sxw.loan.loanorder.moudle.JBData;
-import com.sxw.loan.loanorder.moudle.LoginRen;
 import com.sxw.loan.loanorder.moudle.SendInfo;
-import com.sxw.loan.loanorder.moudle.User;
 import com.sxw.loan.loanorder.util.ConstantUrl;
 import com.sy.alex_library.aliPayUtils.AuthResult;
 import com.sy.alex_library.aliPayUtils.PayResult;
 import com.sy.alex_library.base.BaseActivity;
 import com.sy.alex_library.tools.ToastUtils;
 import com.sy.alex_library.ui.LoadingDialog;
-import com.sy.alex_library.ui.ScrollGridView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -42,8 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -52,17 +45,8 @@ import okhttp3.MediaType;
  * Created by Sxw on 2017-07-14.
  */
 
-public class MineMoneyActivity extends BaseActivity {
-    @BindView(R.id.numbers)
-    TextView numbers;
-    @BindView(R.id.text)
-    TextView text;
-    @BindView(R.id.grid_jb)
-    ScrollGridView gridJb;
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
-    @BindView(R.id.btn_buy)
-    Button btnBuy;
+public class MineMoneyActivity extends BaseActivity<ActivityMinemoneyBinding> {
+
     private BuyJbadapter buyJbadapter;
     private List<JBData> jbDatas = new ArrayList<>();
     private String flag = "1", goodsid;
@@ -78,13 +62,18 @@ public class MineMoneyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minemoney);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("我的J豆");
+
+
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);
         amount = sharedPreferences.getInt("amount", 0);
-        numbers.setText(amount + "");
+        bindingView.numbers.setText(amount + "");
         loadjb();
     }
 
@@ -116,9 +105,9 @@ public class MineMoneyActivity extends BaseActivity {
                                 jbDatas.add(jbData);
                             }
                             buyJbadapter = new BuyJbadapter(getApplicationContext(), jbDatas);
-                            gridJb.setAdapter(buyJbadapter);
+                            bindingView.gridJb.setAdapter(buyJbadapter);
                             buyJbadapter.notifyDataSetChanged();
-                            gridJb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            bindingView.gridJb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     buyJbadapter.setSeclection(position);

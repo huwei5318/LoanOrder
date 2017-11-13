@@ -12,13 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.lljjcoder.citypickerview.widget.CityPicker;
@@ -34,6 +28,7 @@ import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 import com.sxw.loan.loanorder.R;
+import com.sxw.loan.loanorder.databinding.ActivityRealnameBinding;
 import com.sxw.loan.loanorder.moudle.OrderBean;
 import com.sxw.loan.loanorder.moudle.RealNameData;
 import com.sxw.loan.loanorder.moudle.TokenQi;
@@ -53,11 +48,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
+
+import static com.sxw.loan.loanorder.R.id.citys;
+import static com.sxw.loan.loanorder.R.id.imagecode1;
+import static com.sxw.loan.loanorder.R.id.imagecode2;
 
 
 /**
@@ -65,25 +62,8 @@ import okhttp3.MediaType;
  */
 // TODO: 2017-07-13 shiming
 
-public class RealNameActivity extends BaseActivity {
-    @BindView(R.id.image)
-    ImageView image;
-    @BindView(R.id.citys)
-    TextView citys;
-    @BindView(R.id.company)
-    EditText company;
-    @BindView(R.id.companytel)
-    EditText companytel;
-    @BindView(R.id.username)
-    EditText username;
-    @BindView(R.id.idcode)
-    EditText idcode;
-    @BindView(R.id.imagecode1)
-    SimpleDraweeView imagecode1;
-    @BindView(R.id.imagecode2)
-    SimpleDraweeView imagecode2;
-    @BindView(R.id.tijiao)
-    Button tijiao;
+public class RealNameActivity extends BaseActivity<ActivityRealnameBinding> {
+
     private String City;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     List<LocalMedia> selectList;
@@ -97,8 +77,12 @@ public class RealNameActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realname);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("实名认证");
+        setListener();
+
+
         Configuration config = new Configuration.Builder()
                 .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
                 .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
@@ -112,14 +96,18 @@ public class RealNameActivity extends BaseActivity {
         userid = sharedPreferences.getInt("userid", 0);
     }
 
+    private void setListener() {
+        bindingView.citys.setOnClickListener(this);
+        bindingView.imagecode1.setOnClickListener(this);
+        bindingView.imagecode2.setOnClickListener(this);
+        bindingView.tijiao.setOnClickListener(this);
+    }
 
-    @OnClick({R.id.image, R.id.citys, R.id.imagecode1, R.id.imagecode2, R.id.tijiao})
-    public void onClick(View view) {
+    @Override
+    protected void onViewClick(View view) {
+        super.onViewClick(view);
         switch (view.getId()) {
-            case R.id.image:
-                this.finish();
-                break;
-            case R.id.citys:
+            case citys:
                 CityPicker cityPicker = new CityPicker.Builder(RealNameActivity.this)
                         .textSize(20)
                         .title("地址选择")
@@ -154,7 +142,7 @@ public class RealNameActivity extends BaseActivity {
                         String district = citySelected[2];
                         //邮编
                         String code = citySelected[3];
-                        citys.setText(city);
+                        bindingView.citys.setText(city);
                         City = city;
                         iscity = false;
                     }
@@ -165,7 +153,7 @@ public class RealNameActivity extends BaseActivity {
                     }
                 });
                 break;
-            case R.id.imagecode1:
+            case imagecode1:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
@@ -184,7 +172,7 @@ public class RealNameActivity extends BaseActivity {
                         .compress(true)
                         .forResult(1);
                 break;
-            case R.id.imagecode2:
+            case imagecode2:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
@@ -204,9 +192,9 @@ public class RealNameActivity extends BaseActivity {
                         .forResult(2);
                 break;
             case R.id.tijiao:
-                if (EditTools.checkEmpty(this, company, "请输入公司信息")) return;
-                if (EditTools.checkEmpty(this, username, "请输入姓名")) return;
-                if (EditTools.checkEmpty(this, idcode, "请输入身份证号码")) return;
+                if (EditTools.checkEmpty(this, bindingView.company, "请输入公司信息")) return;
+                if (EditTools.checkEmpty(this, bindingView.username, "请输入姓名")) return;
+                if (EditTools.checkEmpty(this, bindingView.idcode, "请输入身份证号码")) return;
                 if (iscity) {
                     ToastUtils.showToastGravityCenter("请选择城市");
                     return;
@@ -220,15 +208,15 @@ public class RealNameActivity extends BaseActivity {
                     return;
                 }
                 RealNameData realNameData = new RealNameData();
-                realNameData.setName(username.getText().toString());
-                realNameData.setIdCode(idcode.getText().toString());
+                realNameData.setName(bindingView.username.getText().toString());
+                realNameData.setIdCode(bindingView.idcode.getText().toString());
                 realNameData.setState("0");
                 realNameData.setUserId(userid);
                 realNameData.setIdFront(idcodezs);
                 realNameData.setIdHand(idcodess);
                 realNameData.setHouseholdAssets(City);
-                realNameData.setQq(companytel.getText().toString());
-                realNameData.setIdOpposite(company.getText().toString());
+                realNameData.setQq(bindingView.companytel.getText().toString());
+                realNameData.setIdOpposite(bindingView.company.getText().toString());
                 final Gson gson = new Gson();
                 final String json = gson.toJson(realNameData);
                 Log.e("idcodezs", idcodezs + "sadasd" + idcodess);
@@ -258,8 +246,8 @@ public class RealNameActivity extends BaseActivity {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     //用putString的方法保存数据
                                     editor.putString("isinsert", "1");
-                                    editor.putString("name", username.getText().toString());
-                                    editor.putString("idcode", idcode.getText().toString());
+                                    editor.putString("name", bindingView.username.getText().toString());
+                                    editor.putString("idcode", bindingView.idcode.getText().toString());
 
                                     //提交当前数据
                                     editor.apply();
@@ -271,7 +259,14 @@ public class RealNameActivity extends BaseActivity {
 
                         });
                 break;
+
         }
+    }
+
+    @OnClick({R.id.image, citys, imagecode1, imagecode2, R.id.tijiao})
+    public void onClick(View view) {
+
+
     }
 
     @Override
@@ -334,7 +329,7 @@ public class RealNameActivity extends BaseActivity {
                                                     if (progress == 1000) {
                                                         loadingDialog.close();
                                                         idcodess = key;
-                                                        imagecode1.setImageURI("file://" + localMedia.getPath());
+                                                        bindingView.imagecode1.setImageURI("file://" + localMedia.getPath());
                                                     }
                                                 }
 
@@ -406,7 +401,7 @@ public class RealNameActivity extends BaseActivity {
                                                     if (progress == 1000) {
                                                         loadingDialog.close();
                                                         idcodezs = key;
-                                                        imagecode2.setImageURI("file://" + localMedia.getPath());
+                                                        bindingView.imagecode2.setImageURI("file://" + localMedia.getPath());
                                                     }
                                                 }
 

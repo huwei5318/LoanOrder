@@ -4,19 +4,14 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.MainActivity;
 import com.sxw.loan.loanorder.R;
+import com.sxw.loan.loanorder.databinding.ActivityRegisterBinding;
 import com.sxw.loan.loanorder.moudle.IsPhone;
 import com.sxw.loan.loanorder.moudle.LoginRen;
 import com.sxw.loan.loanorder.moudle.PhoneCode;
@@ -26,20 +21,14 @@ import com.sxw.loan.loanorder.util.ConstantUrl;
 import com.sy.alex_library.base.BaseActivity;
 import com.sy.alex_library.tools.EditTools;
 import com.sy.alex_library.tools.ToastUtils;
-
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
@@ -50,28 +39,7 @@ import okhttp3.MediaType;
  * Created by Administrator on 2017-05-31.
  */
 
-public class RegAvtivity extends BaseActivity {
-
-    @BindView(R.id.image)
-    ImageView image;
-    @BindView(R.id.reg_username)
-    EditText regUsername;
-    @BindView(R.id.reg_userpass)
-    EditText regUserpass;
-    @BindView(R.id.reg_userpassAgain)
-    EditText regUserpassAgain;
-    @BindView(R.id.imageView)
-    ImageView imageView;
-    @BindView(R.id.et_phoneCodes)
-    EditText etPhoneCodes;
-    @BindView(R.id.reg_check)
-    CheckBox regCheck;
-    @BindView(R.id.reg_agreement)
-    TextView regAgreement;
-    @BindView(R.id.reg_reg)
-    Button regReg;
-    @BindView(R.id.iv_showCode)
-    AppCompatButton ivShowCode;
+public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> {
     private String phonecode;
 
     private String isinsert = "0";//判断实名条件
@@ -81,24 +49,31 @@ public class RegAvtivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.regactivity);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+        setContentView(R.layout.activity_register);
+
+        showContentView();
+        setTitle("注册");
+
+        setListener();
     }
 
-    @OnClick({R.id.image, R.id.iv_showCode, R.id.reg_reg, R.id.reg_agreement})
-    public void onClick(View view) {
+    private void setListener() {
+        bindingView.ivShowCode.setOnClickListener(this);
+        bindingView.regReg.setOnClickListener(this);
+        bindingView.regAgreement.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onViewClick(View view) {
+        super.onViewClick(view);
         switch (view.getId()) {
-            case R.id.image:
-                this.finish();
-                break;
             case R.id.reg_agreement:
 //                startActivity(AgreementActivity.class);
                 break;
             case R.id.iv_showCode:
-                if (EditTools.checkEmpty(this, regUsername, "请输入手机号码")) return;
+                if (EditTools.checkEmpty(this, bindingView.regUsername, "请输入手机号码")) return;
                 Map<String, String> map = new HashMap<>();
-                map.put("phone", regUsername.getText().toString());
+                map.put("phone", bindingView.regUsername.getText().toString());
                 final JSONObject json = new JSONObject(map);
                 final Gson gson = new Gson();
                 OkHttpUtils
@@ -115,7 +90,7 @@ public class RegAvtivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                //  RegAvtivity.this.finish();
+                                //  RegisterActivity.this.finish();
                                 Log.e("isphone", response.toString());
                                 IsPhone isPhone = gson.fromJson(response.toString(), IsPhone.class);
                                 Log.e("code", isPhone.getCode());
@@ -137,7 +112,7 @@ public class RegAvtivity extends BaseActivity {
 
                                                 @Override
                                                 public void onResponse(String response, int id) {
-                                                    //  RegAvtivity.this.finish();
+                                                    //  RegisterActivity.this.finish();
                                                     Log.e("code", response.toString());
                                                     PhoneCode phoneCode = gson.fromJson(response.toString(), PhoneCode.class);
                                                     phonecode = phoneCode.getCode();
@@ -158,19 +133,19 @@ public class RegAvtivity extends BaseActivity {
                         });
                 break;
             case R.id.reg_reg:
-                if (EditTools.checkEmpty(this, regUsername, "请输入手机号码")) return;
-                if (EditTools.checkEmpty(this, regUserpass, "请输入密码")) return;
-                if (EditTools.checkEmpty(this, regUserpassAgain, "请再次输入密码")) return;
-                if (regUserpass.getText().length() < 6 && regUserpassAgain.getText().length() < 6) {
+                if (EditTools.checkEmpty(this, bindingView.regUsername, "请输入手机号码")) return;
+                if (EditTools.checkEmpty(this, bindingView.regUserpass, "请输入密码")) return;
+                if (EditTools.checkEmpty(this, bindingView.regUserpassAgain, "请再次输入密码")) return;
+                if (bindingView.regUserpass.getText().length() < 6 && bindingView.regUserpassAgain.getText().length() < 6) {
                     ToastUtils.showToastGravityCenter("密码必须6位以上");
                     return;
                 }
 
-                if (regUserpass.getText().toString().equals(regUserpassAgain.getText().toString())) {
+                if (bindingView.regUserpass.getText().toString().equals(bindingView.regUserpassAgain.getText().toString())) {
                     OkHttpUtils
                             .postString()
                             .url(ConstantUrl.reg)
-                            .content(new Gson().toJson(new UserREG(regUsername.getText().toString(), regUserpass.getText().toString(), etPhoneCodes.getText().toString())))
+                            .content(new Gson().toJson(new UserREG(bindingView.regUsername.getText().toString(), bindingView.regUserpass.getText().toString(), bindingView.etPhoneCodes.getText().toString())))
                             .mediaType(MediaType.parse("application/json; charset=utf-8"))
                             .build()
                             .execute(new StringCallback() {
@@ -188,7 +163,7 @@ public class RegAvtivity extends BaseActivity {
                                         OkHttpUtils
                                                 .postString()
                                                 .url(ConstantUrl.login)
-                                                .content(new Gson().toJson(new User(regUsername.getText().toString(), regUserpass.getText().toString())))
+                                                .content(new Gson().toJson(new User(bindingView.regUsername.getText().toString(), bindingView.regUserpass.getText().toString())))
                                                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                                                 .build()
                                                 .execute(new StringCallback() {
@@ -214,9 +189,9 @@ public class RegAvtivity extends BaseActivity {
                                                                 editor.putInt("userid", regReturn.getUser().getId());
                                                                 editor.putString("name", regReturn.getUser().getPhone());
                                                                 editor.putString("phone", regReturn.getUser().getPhone());
-                                                                editor.putString("pass", regUserpass.getText().toString());
+                                                                editor.putString("pass", bindingView.regUserpass.getText().toString());
                                                                 Log.e("sdasdasd", "没有实名");
-                                                                JPushInterface.setAlias(RegAvtivity.this, String.valueOf(regReturn.getUser().getId()), new TagAliasCallback() {
+                                                                JPushInterface.setAlias(RegisterActivity.this, String.valueOf(regReturn.getUser().getId()), new TagAliasCallback() {
                                                                     @Override
                                                                     public void gotResult(int i, String s, Set<String> set) {
                                                                         Log.e("tag", i + "");
@@ -227,7 +202,7 @@ public class RegAvtivity extends BaseActivity {
                                                                 userid = regReturn.getUser().getId();
                                                                 ToastUtils.showToastGravityCenter("注册且登录成功");
                                                                 startActivity(MainActivity.class);
-                                                                RegAvtivity.this.finish();
+                                                                RegisterActivity.this.finish();
                                                             } else {
                                                                 SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                                                                         Activity.MODE_PRIVATE);
@@ -239,21 +214,21 @@ public class RegAvtivity extends BaseActivity {
                                                                 editor.putString("name", regReturn.getUser().getName());
                                                                 editor.putString("phone", regReturn.getUser().getPhone());
                                                                 editor.putInt("total", regReturn.getUser().getIntegralSum());
-                                                                editor.putString("pass", regUserpass.getText().toString());
+                                                                editor.putString("pass", bindingView.regUserpass.getText().toString());
                                                                 //提交当前数据
                                                                 editor.apply();
                                                                 //设置标签
                                                                 userid = regReturn.getUser().getId();
                                                                 Log.e("asdasdasdasdasd", regReturn.getUser().getId() + "");
                                                                 ToastUtils.showToastGravityCenter("注册且登录成功");
-                                                                JPushInterface.setAlias(RegAvtivity.this, String.valueOf(regReturn.getUser().getId()), new TagAliasCallback() {
+                                                                JPushInterface.setAlias(RegisterActivity.this, String.valueOf(regReturn.getUser().getId()), new TagAliasCallback() {
                                                                     @Override
                                                                     public void gotResult(int i, String s, Set<String> set) {
                                                                         Log.e("tag", i + "");
                                                                     }
                                                                 });//设置标签
                                                                 startActivity(MainActivity.class);
-                                                                RegAvtivity.this.finish();
+                                                                RegisterActivity.this.finish();
                                                             }
                                                         } else {
                                                             ToastUtils.showToastGravityCenter("手机号或密码错误");
@@ -272,18 +247,17 @@ public class RegAvtivity extends BaseActivity {
         }
     }
 
-
     private CountDownTimer timer = new CountDownTimer(60000, 1000) {
         @Override
         public void onTick(long l) {
-            ivShowCode.setText((int) (l / 1000) + "s");
-            ivShowCode.setClickable(false);
+            bindingView.ivShowCode.setText((int) (l / 1000) + "s");
+            bindingView.ivShowCode.setClickable(false);
         }
 
         @Override
         public void onFinish() {
-            ivShowCode.setClickable(true);
-            ivShowCode.setText("发送验证码");
+            bindingView.ivShowCode.setClickable(true);
+            bindingView.ivShowCode.setText("发送验证码");
         }
     };
 

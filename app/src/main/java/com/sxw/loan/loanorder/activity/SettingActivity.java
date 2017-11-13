@@ -5,54 +5,46 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
+import com.sxw.loan.loanorder.databinding.ActivitySettingBinding;
 import com.sxw.loan.loanorder.ui.IPDialog;
 import com.sy.alex_library.base.BaseActivity;
 import com.sy.alex_library.tools.ToastUtils;
-
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017-05-08.
  */
 
-public class SettingActivity extends BaseActivity {
-    @BindView(R.id.image)
-    ImageView image;
-    @BindView(R.id.btn_repass)
-    Button btnRepass;
-    @BindView(R.id.btn_back)
-    Button btnBack;
+public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting);
+        setContentView(R.layout.activity_setting);
 
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("设置");
+        setListener();
+
 
     }
 
-    @OnClick({R.id.image, R.id.btn_repass, R.id.btn_back})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image:
-                SettingActivity.this.finish();
-                break;
-            case R.id.btn_repass:
+    private void setListener() {
+        bindingView.btnRepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 startActivity(ForgotPassActivity.class);
-                this.finish();
-                break;
-            case R.id.btn_back:
-                IPDialog.Builder builder = new IPDialog.Builder(this);
+                finish();
+            }
+        });
+
+        bindingView.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IPDialog.Builder builder = new IPDialog.Builder(SettingActivity.this);
                 builder.setTitle("确定退出?")
                         .setConfirmButton(new DialogInterface.OnClickListener() {
                             @Override
@@ -74,7 +66,9 @@ public class SettingActivity extends BaseActivity {
                         dialog.dismiss();
                     }
                 }).create().show();
-                break;
-        }
+            }
+        });
     }
+
+
 }

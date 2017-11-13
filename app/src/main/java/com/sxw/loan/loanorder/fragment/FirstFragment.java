@@ -33,10 +33,7 @@ import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.activity.CityPickerActivity;
 import com.sxw.loan.loanorder.activity.ListDetailsActivity;
 import com.sxw.loan.loanorder.activity.ListDetailsQdActivity;
-import com.sxw.loan.loanorder.activity.LognActivity;
-import com.sxw.loan.loanorder.activity.PushSettingActivity;
-import com.sxw.loan.loanorder.activity.RegAvtivity;
-import com.sxw.loan.loanorder.activity.WebVIewActivity;
+import com.sxw.loan.loanorder.activity.WebViewActivity;
 import com.sxw.loan.loanorder.adapter.FirstFragmentAdapter;
 import com.sxw.loan.loanorder.adapter.RollViewPagerAdapter;
 import com.sxw.loan.loanorder.eventBus.EventData;
@@ -125,7 +122,8 @@ public class FirstFragment extends MyFragment {
 //            drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.id_drawerLayout);
 //            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             view = inflater.inflate(R.layout.fragment_first, null);
-            StatusBarUtil.setTransparentForImageViewInFragment(getActivity(), null);
+            StatusBarUtil.setColor(getActivity(),getResources().getColor(R.color.main_nav_blue),0);
+
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("jidai",
                     Activity.MODE_PRIVATE);
             userid = sharedPreferences.getInt("userid", 0);
@@ -432,8 +430,8 @@ public class FirstFragment extends MyFragment {
             @Override
             public void onItemClick(int position) {
                 Log.e("Aaaaa", banners.get(position).getWeburl());
-                if (banners.get(position).getWeburl() != null&&banners.get(position).getWeburl().length()>0) {
-                    Intent intent = new Intent(getContext(), WebVIewActivity.class);
+                if (banners.get(position).getWeburl() != null && banners.get(position).getWeburl().length() > 0) {
+                    Intent intent = new Intent(getContext(), WebViewActivity.class);
                     intent.putExtra("web", banners.get(position).getWeburl());
                     startActivity(intent);
                 }

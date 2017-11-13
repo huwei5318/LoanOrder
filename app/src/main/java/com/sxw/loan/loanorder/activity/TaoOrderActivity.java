@@ -8,14 +8,13 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.adapter.FirstFragmentAdapter;
+import com.sxw.loan.loanorder.databinding.ActivityTaoorderBinding;
 import com.sxw.loan.loanorder.moudle.FirstRespon;
 import com.sxw.loan.loanorder.moudle.OrderVo;
 import com.sxw.loan.loanorder.util.ConstantUrl;
@@ -32,10 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.security.auth.login.LoginException;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -44,11 +39,9 @@ import okhttp3.MediaType;
  * Created by Sxw on 2017-07-15.
  */
 
-public class TaoOrderActivity extends BaseActivity {
+public class TaoOrderActivity extends BaseActivity<ActivityTaoorderBinding> {
     private static final String TAG = "TaoOrderActivity";
     PullToRefreshListView listviews;
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
     //    @BindView(R.id.btn_search)
 //    Button btnSearch;
     private ListView listView;
@@ -69,8 +62,11 @@ public class TaoOrderActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taoorder);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("淘单");
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);

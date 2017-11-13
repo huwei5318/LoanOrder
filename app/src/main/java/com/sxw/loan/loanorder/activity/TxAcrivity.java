@@ -8,15 +8,14 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.adapter.BtTxAdapter;
+import com.sxw.loan.loanorder.databinding.ActivityTxBinding;
 import com.sxw.loan.loanorder.moudle.BtData;
-import com.sxw.loan.loanorder.moudle.FirstRespon;
 import com.sxw.loan.loanorder.moudle.OrderVo;
 import com.sxw.loan.loanorder.util.ConstantUrl;
 import com.sy.alex_library.base.BaseActivity;
@@ -32,9 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
 
@@ -42,9 +38,8 @@ import okhttp3.MediaType;
  * Created by Sxw on 2017-07-15.
  */
 
-public class TxAcrivity extends BaseActivity {
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
+public class TxAcrivity extends BaseActivity<ActivityTxBinding> {
+
     private int pagenum = 1, userid;
     private String TAG = "txactivity";
     private List<BtData.PageInfoBean.ListBean> listBeen = new ArrayList<>();
@@ -57,8 +52,13 @@ public class TxAcrivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tx);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("信用订单");
+
+
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);
@@ -167,10 +167,6 @@ public class TxAcrivity extends BaseActivity {
         }
     };
 
-    @OnClick(R.id.btn_back)
-    public void onClick() {
-        this.finish();
-    }
 
     @Override
     protected void onResume() {

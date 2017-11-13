@@ -18,10 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.adorkable.iosdialog.ActionSheetDialog;
 import com.eminayar.panter.DialogType;
@@ -43,6 +40,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.adapter.LiuChenAdapter;
+import com.sxw.loan.loanorder.databinding.ActivityBttxqddetailsBinding;
 import com.sxw.loan.loanorder.moudle.BtTxQdDetailsBean;
 import com.sxw.loan.loanorder.moudle.FirstOrderDetails;
 import com.sxw.loan.loanorder.moudle.FirstQdDetailsBean;
@@ -52,7 +50,6 @@ import com.sxw.loan.loanorder.util.ConstantUrl;
 import com.sy.alex_library.base.BaseActivity;
 import com.sy.alex_library.tools.ToastUtils;
 import com.sy.alex_library.ui.LoadingDialog;
-import com.sy.alex_library.ui.ScrollListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -65,60 +62,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
+
+import static com.sxw.loan.loanorder.R.id.btqdusertel;
 
 /**
  * Created by Sxw on 2017-07-23.
  */
 
-public class BtTxQdDetailsActivity extends BaseActivity {
-    private static final String TAG = "bttxqddetails";
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
-    @BindView(R.id.btqdusername)
-    TextView btqdusername;
-    @BindView(R.id.btqdusersex)
-    TextView btqdusersex;
-    @BindView(R.id.btqdusertel)
-    TextView btqdusertel;
-    @BindView(R.id.btqdusertime)
-    TextView btqdusertime;
-    @BindView(R.id.btqdusercity)
-    TextView btqdusercity;
-    @BindView(R.id.btqdusertimemoney)
-    TextView btqdusertimemoney;
-    @BindView(R.id.btn_tel)
-    Button btnTel;
-    @BindView(R.id.btn_btqd)
-    Button btnBtqd;
-    @BindView(R.id.liuchengListView)
-    ScrollListView liuchengListView;
-    @BindView(R.id.tabliucheng)
-    LinearLayout tabliucheng;
-    @BindView(R.id.tabdetailds)
-    LinearLayout tabdetailds;
-    @BindView(R.id.btn_hoildfild)
-    Button btnHoildfild;
-    @BindView(R.id.linehold)
-    LinearLayout linehold;
-    @BindView(R.id.btn_faild)
-    Button btnFaild;
-    @BindView(R.id.btn_btqdsuccess)
-    Button btnBtqdsuccess;
-    @BindView(R.id.linesuccess)
-    LinearLayout linesuccess;
-    @BindView(R.id.txtholdfalis)
-    TextView txtholdfalis;
-    @BindView(R.id.change)
-    TextView change;
-    @BindView(R.id.btqdusermoney)
-    TextView btqdusermoney;
-    @BindView(R.id.btqdusermonth)
-    TextView btqdusermonth;
+public class BtTxQdDetailsActivity extends BaseActivity<ActivityBttxqddetailsBinding> {
+    private static final String TAG = "BtTxQdDetailsActivity";
     private int userid, orderid;
     private String phone;
     List<LocalMedia> selectList;
@@ -134,8 +89,14 @@ public class BtTxQdDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bttxqddetails);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+
+        showContentView();
+        setTitle("订单详情");
+        setListener();
+
+
+
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         for (int i = 0; i < 2; i++) {
             if (i == 0) {
@@ -150,14 +111,14 @@ public class BtTxQdDetailsActivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    tabdetailds.setVisibility(View.VISIBLE);
-                    tabliucheng.setVisibility(View.GONE);
+                    bindingView.tabdetailds.setVisibility(View.VISIBLE);
+                    bindingView.tabliucheng.setVisibility(View.GONE);
                 }
                 if (tab.getPosition() == 1) {
                     list.clear();
                     loanorderliucheng(orderid, userid);
-                    tabdetailds.setVisibility(View.GONE);
-                    tabliucheng.setVisibility(View.VISIBLE);
+                    bindingView.tabdetailds.setVisibility(View.GONE);
+                    bindingView.tabliucheng.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -186,6 +147,11 @@ public class BtTxQdDetailsActivity extends BaseActivity {
         uploadManager = new UploadManager(config);
     }
 
+    private void setListener() {
+
+
+    }
+
     private void loanorder(Integer orderid, Integer userid) {
         FirstOrderDetails firstOrderDetails = new FirstOrderDetails();
         firstOrderDetails.setOrderId(orderid);
@@ -208,52 +174,52 @@ public class BtTxQdDetailsActivity extends BaseActivity {
                         Log.e(TAG, "onResponse: " + response);
                         BtTxQdDetailsBean btTxQdDetailsBean = new Gson().fromJson(response, BtTxQdDetailsBean.class);
 
-                        btqdusername.setText(btTxQdDetailsBean.getOrder().getName());
+                        bindingView.btqdusername.setText(btTxQdDetailsBean.getOrder().getName());
                         if (btTxQdDetailsBean.getOrder().getAmount() >= 0) {
-                            btqdusermoney.setText(btTxQdDetailsBean.getOrder().getAmount() + "元");
+                            bindingView.btqdusermoney.setText(btTxQdDetailsBean.getOrder().getAmount() + "元");
                         } else {
-                            btqdusermoney.setText("联系客户咨询");
+                            bindingView.btqdusermoney.setText("联系客户咨询");
                         }
                         if (btTxQdDetailsBean.getOrder().getCreditPeriod() >= 0) {
-                            btqdusermonth.setText(btTxQdDetailsBean.getOrder().getCreditPeriod() + "月");
+                            bindingView.btqdusermonth.setText(btTxQdDetailsBean.getOrder().getCreditPeriod() + "月");
                         } else {
-                            btqdusermonth.setText("联系客户咨询");
+                            bindingView.btqdusermonth.setText("联系客户咨询");
                         }
                         if (btTxQdDetailsBean.getOrder().getJfaMount() != 0) {
-                            change.setText(btTxQdDetailsBean.getOrder().getJfaMount() + "积分");
+                            bindingView.change.setText(btTxQdDetailsBean.getOrder().getJfaMount() + "积分");
                         } else {
-                            change.setText("0积分");
+                            bindingView.change.setText("0积分");
                         }
                         if (btTxQdDetailsBean.getOrder().getSexFlag() != null && btTxQdDetailsBean.getOrder().getSexFlag().equals("0")) {
-                            btqdusersex.setText("男");
+                            bindingView.btqdusersex.setText("男");
                         } else if (btTxQdDetailsBean.getOrder().getSexFlag() != null && btTxQdDetailsBean.getOrder().getSexFlag().equals("1")) {
-                            btqdusersex.setText("女");
+                            bindingView.btqdusersex.setText("女");
                         } else {
-                            btqdusersex.setText("男");
+                            bindingView.btqdusersex.setText("男");
                         }
-                        btqdusertime.setText(stampToDate(String.valueOf(btTxQdDetailsBean.getOrder().getTime())));
-                        btqdusercity.setText(btTxQdDetailsBean.getOrder().getCity() + btTxQdDetailsBean.getOrder().getAddress());
-                        btqdusertimemoney.setText(btTxQdDetailsBean.getOrder().getBtName());
-                        btqdusertel.setText(btTxQdDetailsBean.getOrder().getPhone());
+                        bindingView.btqdusertime.setText(stampToDate(String.valueOf(btTxQdDetailsBean.getOrder().getTime())));
+                        bindingView.btqdusercity.setText(btTxQdDetailsBean.getOrder().getCity() + btTxQdDetailsBean.getOrder().getAddress());
+                        bindingView.btqdusertimemoney.setText(btTxQdDetailsBean.getOrder().getBtName());
+                        bindingView.btqdusertel.setText(btTxQdDetailsBean.getOrder().getPhone());
                         phone = btTxQdDetailsBean.getOrder().getPhone();
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 4) {
-                            linehold.setVisibility(View.GONE);
-                            linesuccess.setVisibility(View.VISIBLE);
+                            bindingView.linehold.setVisibility(View.GONE);
+                            bindingView.linesuccess.setVisibility(View.VISIBLE);
                         }
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 1) {
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 2) {
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 3) {
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                     }
 
@@ -294,31 +260,31 @@ public class BtTxQdDetailsActivity extends BaseActivity {
                         list.add(btTxQdDetailsBean.getProcess().getQdMsg());
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 4) {
                             list.add("Hold住订单(已经联系客户，达成初步的合作意向)");
-                            linehold.setVisibility(View.GONE);
-                            linesuccess.setVisibility(View.VISIBLE);
+                            bindingView.linehold.setVisibility(View.GONE);
+                            bindingView.linesuccess.setVisibility(View.VISIBLE);
                         }
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 1) {
                             list.add("订单已取消" + "(" + btTxQdDetailsBean.getProcess().getCancelReason() + ")");
                             list.add("订单已完成");
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 2) {
                             list.add("Hold住订单(已经联系客户，达成初步的合作意向)");
                             list.add("放款失败" + "(" + btTxQdDetailsBean.getProcess().getDkFailReason() + ")");
                             list.add("订单已完成");
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         if (btTxQdDetailsBean.getProcess().getOrderStatus() == 3) {
                             list.add("Hold住订单(已经联系客户，达成初步的合作意向)");
                             list.add("放款成功");
                             list.add("订单已完成");
-                            txtholdfalis.setVisibility(View.VISIBLE);
-                            linesuccess.setVisibility(View.GONE);
-                            linehold.setVisibility(View.GONE);
+                            bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                            bindingView.linesuccess.setVisibility(View.GONE);
+                            bindingView.linehold.setVisibility(View.GONE);
                         }
                         Message message = new Message();
                         message.what = 1;
@@ -333,7 +299,7 @@ public class BtTxQdDetailsActivity extends BaseActivity {
             switch (msg.what) {
                 case 1:
                     liuChenAdapter = new LiuChenAdapter(BtTxQdDetailsActivity.this, list);
-                    liuchengListView.setAdapter(liuChenAdapter);
+                    bindingView.liuchengListView.setAdapter(liuChenAdapter);
                     liuChenAdapter.notifyDataSetChanged();
                     break;
             }
@@ -341,7 +307,7 @@ public class BtTxQdDetailsActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.btn_back, R.id.btn_tel, R.id.btn_btqd, R.id.btn_hoildfild, R.id.btn_faild, R.id.btn_btqdsuccess,R.id.btqdusertel})
+    @OnClick({R.id.btn_back, R.id.btn_tel, R.id.btn_btqd, R.id.btn_hoildfild, R.id.btn_faild, R.id.btn_btqdsuccess, btqdusertel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
@@ -395,7 +361,7 @@ public class BtTxQdDetailsActivity extends BaseActivity {
                 }
                 startActivity(mIntent);
                 break;
-            case R.id.btqdusertel:
+            case btqdusertel:
                 //打电话
                 Intent mIntent1 = new Intent(Intent.ACTION_CALL);
                 mIntent1.setData(Uri.parse("tel:" + phone));
@@ -435,8 +401,8 @@ public class BtTxQdDetailsActivity extends BaseActivity {
                                 Log.e(TAG, "onResponse: " + response);
                                 OrderBean orderBean = new Gson().fromJson(response, OrderBean.class);
                                 if (orderBean.getCode().equals("0")) {
-                                    linehold.setVisibility(View.GONE);
-                                    linesuccess.setVisibility(View.VISIBLE);
+                                    bindingView.linehold.setVisibility(View.GONE);
+                                    bindingView.linesuccess.setVisibility(View.VISIBLE);
                                     ToastUtils.showToastGravityCenter(orderBean.getMsg() + ",可以继续操作");
                                 } else {
                                     ToastUtils.showToastGravityCenter(orderBean.getMsg());
@@ -484,9 +450,9 @@ public class BtTxQdDetailsActivity extends BaseActivity {
                                                         Log.e(TAG, "onResponse: " + response);
                                                         OrderBean orderBean = new Gson().fromJson(response, OrderBean.class);
                                                         ToastUtils.showToastGravityCenter(orderBean.getMsg());
-                                                        txtholdfalis.setVisibility(View.VISIBLE);
-                                                        linesuccess.setVisibility(View.GONE);
-                                                        linehold.setVisibility(View.GONE);
+                                                        bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                                                        bindingView.linesuccess.setVisibility(View.GONE);
+                                                        bindingView.linehold.setVisibility(View.GONE);
                                                     }
 
                                                 });
@@ -530,9 +496,9 @@ public class BtTxQdDetailsActivity extends BaseActivity {
                                                     @Override
                                                     public void onResponse(String response, int id) {
                                                         Log.e(TAG, "onResponse: " + response);
-                                                        txtholdfalis.setVisibility(View.VISIBLE);
-                                                        linesuccess.setVisibility(View.GONE);
-                                                        linehold.setVisibility(View.GONE);
+                                                        bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                                                        bindingView.linesuccess.setVisibility(View.GONE);
+                                                        bindingView.linehold.setVisibility(View.GONE);
                                                     }
 
                                                 });
@@ -595,9 +561,9 @@ public class BtTxQdDetailsActivity extends BaseActivity {
                                     OrderBean orderBean = new Gson().fromJson(response, OrderBean.class);
                                     ToastUtils.showToastGravityCenter(orderBean.getMsg());
                                     popWindow.dismiss();
-                                    txtholdfalis.setVisibility(View.VISIBLE);
-                                    linesuccess.setVisibility(View.GONE);
-                                    linehold.setVisibility(View.GONE);
+                                    bindingView.txtholdfalis.setVisibility(View.VISIBLE);
+                                    bindingView.linesuccess.setVisibility(View.GONE);
+                                    bindingView.linehold.setVisibility(View.GONE);
                                 }
 
                             });

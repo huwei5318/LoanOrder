@@ -4,38 +4,33 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
+import com.sxw.loan.loanorder.databinding.ActivityWebviewBinding;
 import com.sy.alex_library.base.BaseActivity;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017-05-08.
  */
 
-public class WebVIewActivity extends BaseActivity {
-    WebView webview;
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
+public class WebViewActivity extends BaseActivity<ActivityWebviewBinding> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("详情");
+
+
         String url = getIntent().getExtras().getString("web");
-        webview = (WebView) findViewById(R.id.webview);
-        WebSettings settings = webview.getSettings();
+        WebSettings settings = bindingView.webview.getSettings();
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-        webview.loadUrl(url);
-        webview.setWebViewClient(new WebViewClient() {
+        bindingView.webview.loadUrl(url);
+        bindingView.webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -46,8 +41,4 @@ public class WebVIewActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.btn_back)
-    public void onClick() {
-        this.finish();
-    }
 }

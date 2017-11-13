@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
+import com.sxw.loan.loanorder.databinding.ActivityForgotpassBinding;
 import com.sxw.loan.loanorder.moudle.LoginRen;
 import com.sxw.loan.loanorder.moudle.PhoneCode;
 import com.sxw.loan.loanorder.moudle.UserREG;
@@ -30,57 +26,50 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
+
+import static com.sxw.loan.loanorder.R.id.showCode;
 
 /**
  * Created by Sxw on 2017-06-23.
  */
 
-public class ForgotPassActivity extends BaseActivity {
-    @BindView(R.id.back)
-    ImageView back;
-    @BindView(R.id.username)
-    EditText username;
-    @BindView(R.id.userpass)
-    EditText userpass;
-    @BindView(R.id.userpassAgain)
-    EditText userpassAgain;
-    @BindView(R.id.phoneCodes)
-    EditText phoneCodes;
-    @BindView(R.id.showCode)
-    AppCompatButton showCode;
-    @BindView(R.id.xiugai)
-    Button xiugai;
+public class ForgotPassActivity extends BaseActivity<ActivityForgotpassBinding> {
+
     private String phonecode;
     private String phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgotactivity);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+        setContentView(R.layout.activity_forgotpass);
+
+        showContentView();
+        setTitle("修改密码");
+
+        setListener();
+
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
 
     }
 
-    @OnClick({R.id.back, R.id.showCode, R.id.xiugai})
-    public void onClick(View view) {
+    private void setListener() {
+        bindingView.showCode.setOnClickListener(this);
+        bindingView.xiugai.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onViewClick(View view) {
+        super.onViewClick(view);
         switch (view.getId()) {
-            case R.id.back:
-                this.finish();
-                break;
-            case R.id.showCode:
+            case showCode:
                 //发送验证码
-                if (EditTools.checkEmpty(this, username, "请输入手机号码")) return;
+                if (EditTools.checkEmpty(this, bindingView.username, "请输入手机号码")) return;
 
                 Map<String, String> map = new HashMap<>();
-                map.put("phone", username.getText().toString());
+                map.put("phone", bindingView.username.getText().toString());
                 final JSONObject json = new JSONObject(map);
                 final Gson gson = new Gson();
                 OkHttpUtils
@@ -97,7 +86,7 @@ public class ForgotPassActivity extends BaseActivity {
 
                             @Override
                             public void onResponse(String response, int id) {
-                                //  RegAvtivity.this.finish();
+                                //  RegisterActivity.this.finish();
                                 Log.e("code", response.toString());
                                 PhoneCode phoneCode = gson.fromJson(response.toString(), PhoneCode.class);
                                 phonecode = phoneCode.getCode();
@@ -115,18 +104,18 @@ public class ForgotPassActivity extends BaseActivity {
                         });
                 break;
             case R.id.xiugai:
-                if (EditTools.checkEmpty(this, userpass, "请输入新密码")) return;
-                if (EditTools.checkEmpty(this, userpassAgain, "请再次输入新密码")) return;
-                if (userpass.getText().length() < 6 && userpassAgain.getText().length() < 6) {
+                if (EditTools.checkEmpty(this, bindingView.userpass, "请输入新密码")) return;
+                if (EditTools.checkEmpty(this, bindingView.userpassAgain, "请再次输入新密码")) return;
+                if (bindingView.userpass.getText().length() < 6 && bindingView.userpassAgain.getText().length() < 6) {
                     ToastUtils.showToastGravityCenter("密码必须6位以上");
                     return;
                 }
 
-                if (userpass.getText().toString().equals(userpassAgain.getText().toString())) {
+                if (bindingView.userpass.getText().toString().equals(bindingView.userpassAgain.getText().toString())) {
                     OkHttpUtils
                             .postString()
                             .url(ConstantUrl.forgotpassurl)
-                            .content(new Gson().toJson(new UserREG(username.getText().toString(), userpass.getText().toString(), phoneCodes.getText().toString())))
+                            .content(new Gson().toJson(new UserREG(bindingView.username.getText().toString(), bindingView.userpass.getText().toString(), bindingView.phoneCodes.getText().toString())))
                             .mediaType(MediaType.parse("application/json; charset=utf-8"))
                             .build()
                             .execute(new StringCallback() {
@@ -161,17 +150,19 @@ public class ForgotPassActivity extends BaseActivity {
         }
     }
 
+
+
     private CountDownTimer timer = new CountDownTimer(60000, 1000) {
         @Override
         public void onTick(long l) {
-            showCode.setText((int) (l / 1000) + "s");
-            showCode.setClickable(false);
+            bindingView.showCode.setText((int) (l / 1000) + "s");
+            bindingView.showCode.setClickable(false);
         }
 
         @Override
         public void onFinish() {
-            showCode.setClickable(true);
-            showCode.setText("发送验证码");
+            bindingView.showCode.setClickable(true);
+            bindingView.showCode.setText("发送验证码");
         }
     };
 }

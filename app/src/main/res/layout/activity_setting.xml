@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/btn_repass"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="750px"
+            android:layout_height="88px"
+            android:layout_gravity="center"
+            android:layout_marginTop="50px"
+            android:background="@color/white"
+            android:text="修改密码"
+            android:textColor="#e74240"
+            android:textSize="30px" />
+
+        <Button
+            android:id="@+id/btn_back"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="750px"
+            android:layout_height="88px"
+            android:layout_gravity="center"
+            android:layout_marginTop="20px"
+            android:background="@color/white"
+            android:text="退出登录"
+            android:textColor="#e74240"
+            android:textSize="30px" />
+    </LinearLayout>
+</layout>

@@ -5,14 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
-import com.sxw.loan.loanorder.moudle.BtQdDetailsBean;
+import com.sxw.loan.loanorder.databinding.ActivityBttxqdBinding;
 import com.sxw.loan.loanorder.moudle.BtTxQdDetailsBean;
 import com.sxw.loan.loanorder.moudle.BtTxQdReg;
 import com.sxw.loan.loanorder.moudle.FirstOrderDetails;
@@ -26,9 +22,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.MediaType;
 
@@ -36,38 +29,23 @@ import okhttp3.MediaType;
  * Created by Sxw on 2017-07-23.
  */
 
-public class BtTxQdActivity extends BaseActivity {
-    private static final String TAG = "bttxqd";
-    @BindView(R.id.btn_back)
-    ImageView btnBack;
-    @BindView(R.id.btqdusername)
-    TextView btqdusername;
-    @BindView(R.id.btqdusersex)
-    TextView btqdusersex;
-    @BindView(R.id.btqdusertel)
-    TextView btqdusertel;
-    @BindView(R.id.btqdusertime)
-    TextView btqdusertime;
-    @BindView(R.id.btqdusercity)
-    TextView btqdusercity;
-    @BindView(R.id.btqdusertimemoney)
-    TextView btqdusertimemoney;
-    @BindView(R.id.btn_btqd)
-    Button btnBtqd;
-    @BindView(R.id.change)
-    TextView change;
-    @BindView(R.id.btqdusermoney)
-    TextView btqdusermoney;
-    @BindView(R.id.btqdusermonth)
-    TextView btqdusermonth;
+public class BtTxQdActivity extends BaseActivity<ActivityBttxqdBinding> {
+    private static final String TAG = "BtTxQdActivity";
     private int userid, orderid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bttxqd);
-        ButterKnife.bind(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
+        showContentView();
+        setTitle("订单详情");
+        setListener();
+
+        initData();
+    }
+
+    private void initData() {
         SharedPreferences sharedPreferences = getSharedPreferences("jidai",
                 Activity.MODE_PRIVATE);
         userid = sharedPreferences.getInt("userid", 0);
@@ -98,40 +76,41 @@ public class BtTxQdActivity extends BaseActivity {
                         Log.e(TAG, "onResponse: " + response);
                         BtTxQdDetailsBean btQdDetailsBean = new Gson().fromJson(response, BtTxQdDetailsBean.class);
                         if (btQdDetailsBean.getOrder().getName() != null) {
-                            btqdusername.setText(btQdDetailsBean.getOrder().getName());
+                            bindingView.btqdusername.setText(btQdDetailsBean.getOrder().getName());
                         }
                         //金额
                         if (btQdDetailsBean.getOrder().getAmount() >= 0) {
-                            btqdusermoney.setText(btQdDetailsBean.getOrder().getAmount() + "元");
+                            bindingView.btqdusermoney.setText(btQdDetailsBean.getOrder().getAmount() + "元");
                         } else {
-                            btqdusermoney.setText("联系客户咨询");
+                            bindingView.btqdusermoney.setText("联系客户咨询");
                         }
                         if (btQdDetailsBean.getOrder().getCreditPeriod() >= 0) {
-                            btqdusermonth.setText(btQdDetailsBean.getOrder().getCreditPeriod() + "月");
+                            bindingView.btqdusermonth.setText(btQdDetailsBean.getOrder().getCreditPeriod() + "月");
                         } else {
-                            btqdusermonth.setText("联系客户咨询");
+                            bindingView.btqdusermonth.setText("联系客户咨询");
                         }
                         if (btQdDetailsBean.getOrder().getJfaMount() != 0) {
-                            change.setText(btQdDetailsBean.getOrder().getJfaMount() + "积分");
+                            bindingView.change.setText(btQdDetailsBean.getOrder().getJfaMount() + "积分");
                         } else {
-                            change.setText("0积分");
+                            bindingView.change.setText("0积分");
                         }
                         if (btQdDetailsBean.getOrder().getSexFlag() != null && btQdDetailsBean.getOrder().getSexFlag().equals("0")) {
-                            btqdusersex.setText("男");
+                            bindingView.btqdusersex.setText("男");
                         } else if (btQdDetailsBean.getOrder().getSexFlag() != null && btQdDetailsBean.getOrder().getSexFlag().equals("1")) {
-                            btqdusersex.setText("女");
+                            bindingView.btqdusersex.setText("女");
                         } else {
-                            btqdusersex.setText("男");
+                            bindingView.btqdusersex.setText("男");
                         }
-                        btqdusertime.setText(stampToDate(String.valueOf(btQdDetailsBean.getOrder().getTime())));
+                        bindingView.btqdusertime.setText(stampToDate(String.valueOf(btQdDetailsBean.getOrder().getTime())));
 
-                        btqdusercity.setText(btQdDetailsBean.getOrder().getCity() + btQdDetailsBean.getOrder().getAddress());
-                        btqdusertimemoney.setText(btQdDetailsBean.getOrder().getBtName());
+                        bindingView.btqdusercity.setText(btQdDetailsBean.getOrder().getCity() + btQdDetailsBean.getOrder().getAddress());
+                        bindingView.btqdusertimemoney.setText(btQdDetailsBean.getOrder().getBtName());
 
                     }
 
                 });
     }
+
     public static String stampToDate(String s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -140,12 +119,16 @@ public class BtTxQdActivity extends BaseActivity {
         res = simpleDateFormat.format(date);
         return res;
     }
-    @OnClick({R.id.btn_back, R.id.btn_btqd})
-    public void onClick(View view) {
+
+    private void setListener() {
+        bindingView.btnBtqd.setOnClickListener(this);
+    }
+
+
+    @Override
+    protected void onViewClick(View view) {
+        super.onViewClick(view);
         switch (view.getId()) {
-            case R.id.btn_back:
-                this.finish();
-                break;
             case R.id.btn_btqd:
                 BtTxQdReg btTxQdReg = new BtTxQdReg();
                 btTxQdReg.setId(orderid);
@@ -182,4 +165,5 @@ public class BtTxQdActivity extends BaseActivity {
                 break;
         }
     }
+
 }

@@ -44,7 +44,7 @@ public abstract class BaseWelcomeActivity extends BaseAutoLayoutActivity {
         setContentView(getContentViewLayoutID());
         initViewAndDatas();
         BaseAppManager.getInstance().addActivity(this);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+
         Collections.addAll(permissionsList, permissionsArray);
         checkRequiredPermission(this, getPermissionsArray());
     }

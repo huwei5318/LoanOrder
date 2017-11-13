@@ -2,7 +2,6 @@ package com.sxw.loan.loanorder.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,6 +22,7 @@ import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
 import com.sxw.loan.loanorder.adapter.CityListAdapter;
 import com.sxw.loan.loanorder.adapter.ResultListAdapter;
+import com.sxw.loan.loanorder.databinding.ActivityCpListBinding;
 import com.sxw.loan.loanorder.db.DBManager;
 import com.sxw.loan.loanorder.moudle.City;
 import com.sxw.loan.loanorder.moudle.LocateState;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Author Bro0cL on 2016/12/16.
  */
-public class CityPickerActivity extends BaseActivity implements View.OnClickListener {
+public class CityPickerActivity extends BaseActivity<ActivityCpListBinding> {
     public static final String KEY_PICKED_CITY = "picked_city";
 
     private ListView mListView;
@@ -56,8 +56,12 @@ public class CityPickerActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cp_activity_city_list);
-        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+        setContentView(R.layout.activity_cp_list);
+        showContentView();
+        setTitle("选择城市");
+
+
+
         initData();
         initView();
         initLocation();
@@ -166,10 +170,8 @@ public class CityPickerActivity extends BaseActivity implements View.OnClickList
         });
 
         clearBtn = (ImageView) findViewById(R.id.iv_search_clear);
-        backBtn = (ImageView) findViewById(R.id.back);
 
         clearBtn.setOnClickListener(this);
-        backBtn.setOnClickListener(this);
     }
 
     private void back(String city) {
@@ -187,9 +189,6 @@ public class CityPickerActivity extends BaseActivity implements View.OnClickList
             clearBtn.setVisibility(View.GONE);
             emptyView.setVisibility(View.GONE);
             mResultListView.setVisibility(View.GONE);
-        } else if (i == R.id.back) {
-            finish();
-
         }
     }
 

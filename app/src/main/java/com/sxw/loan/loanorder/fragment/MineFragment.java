@@ -20,7 +20,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.sxw.loan.loanorder.R;
-import com.sxw.loan.loanorder.activity.LognActivity;
+import com.sxw.loan.loanorder.activity.LoginActivity;
 import com.sxw.loan.loanorder.activity.MineMoneyActivity;
 import com.sxw.loan.loanorder.activity.MineOrderActivty;
 import com.sxw.loan.loanorder.activity.PushSettingActivity;
@@ -106,12 +106,12 @@ public class MineFragment extends MyFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, null);
         ButterKnife.bind(this, view);
-        StatusBarUtil.setTransparentForImageViewInFragment(getActivity(), null);
+        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.main_nav_blue), 0);
 
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), LognActivity.class);
+                Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -239,7 +239,7 @@ public class MineFragment extends MyFragment {
                             }).setCancelButton(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getContext(), LognActivity.class);
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
                             startActivity(intent);
                             dialog.dismiss();
                         }
@@ -289,7 +289,7 @@ public class MineFragment extends MyFragment {
                             }).setCancelButton(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getContext(), LognActivity.class);
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
                             startActivity(intent);
                             dialog.dismiss();
                         }
@@ -335,7 +335,7 @@ public class MineFragment extends MyFragment {
                             }).setCancelButton(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getContext(), LognActivity.class);
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
                             startActivity(intent);
                             dialog.dismiss();
                         }
@@ -362,7 +362,7 @@ public class MineFragment extends MyFragment {
                             }).setCancelButton(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getContext(), LognActivity.class);
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
                             startActivity(intent);
                             dialog.dismiss();
                         }
@@ -386,7 +386,7 @@ public class MineFragment extends MyFragment {
                             }).setCancelButton(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getContext(), LognActivity.class);
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
                             startActivity(intent);
                             dialog.dismiss();
                         }
